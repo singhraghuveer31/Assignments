@@ -3,16 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:VM="clr-namespace:DomainModelEditor.ViewModel"
         mc:Ignorable="d"
-        Title="Generate Schema" Height="80" Width="450"
+        Title="Generate Schema" Height="233" Width="512"
         AutomationProperties.AutomationId="GenerateSchemaDialog">
-    <StackPanel>
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Margin="10" Height="20">
-            <Button Content="Generate" Click="Generate_Click" Width="60"
+    <StackPanel HorizontalAlignment="Center" Width="512" Height="217" VerticalAlignment="Top">
+        <Grid Height="126" Width="503" HorizontalAlignment="Right" RenderTransformOrigin="0.468,0.481">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="207*"/>
+                <ColumnDefinition Width="292*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,294,-84" Grid.ColumnSpan="2">
+                <Label Content="Database Framework" Height="92" VerticalContentAlignment="Bottom" Width="207"/>
+                <ComboBox  SelectedValue="{Binding SelectedTargetFramework}" ItemsSource="{Binding TargetFrameworks, Mode=OneWay}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" BorderThickness="2,2,2,2" Width="206"/>
+            </StackPanel>
+            <GroupBox Header="Schema Generation Options" Grid.Column ="1" Margin="0,-5,0,-84" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Center" Width="258" BorderThickness="2,2,2,2" ClipToBounds="True">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ComboBox Grid.Column="1" VerticalAlignment="Center" RenderTransformOrigin="1.269,0.58" Margin="0,0,-76,0"/>
+                    <Label Content="Naming Convention" HorizontalAlignment="Left" VerticalAlignment="Center" Width="117"/>
+                    <GroupBox Header="Other Options" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,-83,-80"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                    Margin="10" Height="20" Width="127">
+            <Button Content="Generate" Command="{Binding GenerateSchemaClickCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" Width="60"
                     AutomationProperties.AutomationId="GenerateDatabase.GenerateButton" />
-            <Button Content="Cancel" Click="Cancel_Click" Margin="10,0" Width="50" />
+            <Button Content="Cancel" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}, Mode=FindAncestor}}" Margin="10,0" Width="50" />
         </StackPanel>
     </StackPanel>
 </Window>

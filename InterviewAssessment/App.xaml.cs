@@ -22,7 +22,7 @@ namespace DomainModelEditor
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
-        private void ConfigureLogger()
+		private void ConfigureLogger()
         {
             Serilog.Debugging.SelfLog.Enable(Console.Error);
 

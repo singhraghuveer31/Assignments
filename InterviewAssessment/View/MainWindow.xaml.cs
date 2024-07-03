@@ -49,7 +49,6 @@ namespace DomainModelEditor.View
             try
             {
                 var popup = new AddEntityDialog();
-                popup.ShowDialog();
 
                 if (!string.IsNullOrWhiteSpace(popup.EntityName))
                 {
@@ -70,12 +69,9 @@ namespace DomainModelEditor.View
         {
             try
             {
-                var popup = new GenerateSchemaDialog();
+                var popup = DependencyInjectionScope.Resolve<GenerateSchemaDialog>();
+                (popup.DataContext as GenerateSchemaDialogViewModel).Entities = DataContext.Entities;
                 popup.ShowDialog();
-                if (popup.Continue)
-                {
-                    // User Story 1
-                }
             }
             catch (Exception ex)
             {

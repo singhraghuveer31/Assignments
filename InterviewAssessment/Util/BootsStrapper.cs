@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Autofac;
 using Autofac.Core;
+using Autofac.Features.ResolveAnything;
+using DatabaseSchemaEngine.Repository;
+using DatabaseSchemaEngine.Service.SchemaGeneration;
 using DomainModelEditor.Behaviour;
 using DomainModelEditor.Model;
 using DomainModelEditor.Properties;
+using DomainModelEditor.View.Dialog;
 using DomainModelEditor.ViewModel;
 using Serilog;
 
@@ -100,7 +105,17 @@ namespace DomainModelEditor.Util
 
             Logger.Debug("Registering dragging behaviour.");
             builder.RegisterInstance<IDraggingBehaviour>(new DraggingBehaviour());
-        }
+
+			builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+
+            var databaseSchemaGenerationService = new DatabaseSchemaGenerationService(Logger);
+			builder.RegisterInstance<IDatabaseSchemaGeneratorService>(databaseSchemaGenerationService);
+			builder.RegisterType<GenerateSchemaDialog>().
+			WithParameters(new List<Parameter>
+			{
+				new TypedParameter(typeof(IDatabaseSchemaGeneratorService), databaseSchemaGenerationService),
+			});
+		}
 
         public static T Resolve<T>()
         {

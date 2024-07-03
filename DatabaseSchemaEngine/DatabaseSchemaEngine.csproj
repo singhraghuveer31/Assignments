@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\Raghuveer Singh\OneDrive\Documents\Mendix\interview-assessment-studio-pro-backend\DatabaseSchemaEngine\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\Raghuveer Singh\OneDrive\Documents\Mendix\interview-assessment-studio-pro-backend\DatabaseSchemaEngine\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\SchemaMappingConfig\" />
+  </ItemGroup>
+
+</Project>
