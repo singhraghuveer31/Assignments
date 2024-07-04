@@ -11,5 +11,10 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
         /// Generates database schema.
         /// </summary>
         void GenerateDatabaseSchema(string targetFramework, IEnumerable<IEntityDetail> entityDetails);
+
+		/// <summary>
+		/// Contains output for schema generation service.
+		/// </summary>
+		ISchemaGenerationOutput Output { get; protected set; }
     }
 }

@@ -19,27 +19,27 @@
 
 		protected override string GetTableNameTag()
 		{
-			return Constants.SchemaGeneratorConstant.SFCDBDataStoreNameTag;
+			return Constants.SFCDBSchemaGeneratorConstant.DataStoreNameTag;
 		}
 
 		protected override string GetPropertyPlaceHolder()
 		{
-			return Constants.SchemaGeneratorConstant.SFCDBDataStorePropertyTag;
+			return Constants.SFCDBSchemaGeneratorConstant.DataStorePropertyTag;
 		}
 
 		protected override string GetPropertyTypePlaceHolder()
 		{
-			return Constants.SchemaGeneratorConstant.SFCDBDataTypeNameTag;
+			return Constants.SFCDBSchemaGeneratorConstant.DataTypeNameTag;
 		}
 
 		protected override string GetPropertyNamePlaceHolder()
 		{
-			return Constants.SchemaGeneratorConstant.SFCDBDataPropertyNameTag;
+			return Constants.SFCDBSchemaGeneratorConstant.DataPropertyNameTag;
 		}
 
 		protected override string GetMultiSchemaDefinitionSeparator()
 		{
-			return Constants.SchemaGeneratorConstant.SFCDBMultiDefSeparator;
+			return Constants.SFCDBSchemaGeneratorConstant.MultiDefSeparator;
 		}
 
 		protected override void WriteFile(string content, string fileExtension)
@@ -61,11 +61,11 @@
 			{
 				fileName = $"{DateTime.Now.ToString("yyy-dd-MM")}";
 
-				var outputDirectory = Constants.SchemaGeneratorConstant.SFCDBSchemaOutputPath;
+				var outputDirectory = Constants.SFCDBSchemaGeneratorConstant.SchemaOutputPath;
 
 				fileName = FileNameHelper.GetNextFileName(fileName, outputDirectory, fileExtension);
 
-				fileName = $"{Path.Combine(Constants.SchemaGeneratorConstant.SFCDBSchemaOutputPath, fileName)}.{fileExtension}";
+				fileName = $"{Path.Combine(Constants.SFCDBSchemaGeneratorConstant.SchemaOutputPath, fileName)}.{fileExtension}";
 			}
 			catch (Exception ex)
 			{

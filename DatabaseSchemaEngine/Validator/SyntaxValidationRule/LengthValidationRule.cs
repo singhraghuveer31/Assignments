@@ -2,11 +2,18 @@
 {
 	public class LengthValidationRule : IValidationRule
 	{
-		public IEnumerable<string> Erros { get; set; }
+		private readonly int minLength;
+		private readonly int maxLength;
 
-		public bool IsValid()
+		public LengthValidationRule(int minLength, int maxLength)
 		{
-			throw new NotImplementedException();
+			this.minLength = minLength;
+			this.maxLength = maxLength;
+		}
+
+		public bool IsValid(string syntax)
+		{
+			return syntax.Length >= minLength && syntax.Length <= maxLength;
 		}
 	}
 }

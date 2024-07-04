@@ -1,13 +1,21 @@
 ﻿
+using System.Text.RegularExpressions;
+
 namespace DatabaseSchemaEngine.Validator.SyntaxValidationRule
 {
 	internal class SpecialCharacterValidationRule : IValidationRule
 	{
-		public IEnumerable<string> Erros { get; set; }
+		private readonly List<char> allowedSpecialChars;
 
-		public bool IsValid()
+		public SpecialCharacterValidationRule(List<char> allowedSpecialChars)
 		{
-			throw new NotImplementedException();
+			this.allowedSpecialChars = allowedSpecialChars;
+		}
+
+		public bool IsValid(string syntax)
+		{
+			var chars = string.Join("", allowedSpecialChars);
+			return new Regex($"^[a-zA-Z0-9{chars}]").IsMatch(syntax);
 		}
 	}
 }

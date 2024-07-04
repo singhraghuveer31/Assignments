@@ -15,4 +15,24 @@
 		/// </summary>
 		SQLite
 	}
+
+	public enum NamingConventionValues
+	{
+		UpperCase = 0,
+		CapitalCaseFirst,
+		LowerCase,
+		CamelCase
+	}
+
+	public enum PrefixConventionValues
+	{
+		Letter=0,
+		UnderScore
+	}
+
+	public enum TypeName 
+	{
+		Entity,
+		Attibute
+	}
 }

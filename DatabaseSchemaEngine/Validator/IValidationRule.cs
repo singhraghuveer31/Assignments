@@ -2,7 +2,6 @@
 {
 	public interface IValidationRule
 	{
-		bool IsValid();
-		IEnumerable<string> Erros { get; set; }
+		bool IsValid(string syntax);
 	}
 }

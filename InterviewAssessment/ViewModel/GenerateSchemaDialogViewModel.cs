@@ -129,11 +129,11 @@ namespace DomainModelEditor.ViewModel
 
 		private void GenerateDatabaseSchema() 
 		{
-			var entityDetails = new List<EntityDetail>();
+			var entityDetails = new List<IEntityDetail>();
 
 			foreach (var entity in Entities) 
 			{
-				var attribures = entity.Attributes.Select(x=> new AttributeDetail(x.DataType.ToString(), x.Name)).ToList();
+				var attribures = entity.Attributes.Select(x=> new AttributeDetail(x.DataType.ToString(), x.Name, entity.Name)).ToList<IAttributeDetail>();
 				entityDetails.Add(new EntityDetail(entity.Name, attribures));
 			}
 

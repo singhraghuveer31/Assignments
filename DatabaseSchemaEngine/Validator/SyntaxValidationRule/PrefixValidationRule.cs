@@ -1,13 +1,31 @@
 ﻿
+using DatabaseSchemaEngine.Enum;
+
 namespace DatabaseSchemaEngine.Validator.SyntaxValidationRule
 {
 	public class PrefixValidationRule : IValidationRule
 	{
-		public IEnumerable<string> Erros { get; set; }
-
-		public bool IsValid()
+		public PrefixValidationRule(PrefixConventionValues prefixConvention)
 		{
-			throw new NotImplementedException();
+			PrefixConvention = prefixConvention;
+		}
+
+		public PrefixConventionValues PrefixConvention { get; }
+
+		public bool IsValid(string syntax)
+		{
+			if (PrefixConvention == PrefixConventionValues.Letter)
+			{
+				return char.IsLetter(syntax[0]);
+			}
+			else if (PrefixConvention == PrefixConventionValues.UnderScore)
+			{
+				return syntax[0] == '_';
+			}
+			else 
+			{
+				return true;
+			}
 		}
 	}
 }

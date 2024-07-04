@@ -5,6 +5,8 @@ namespace DatabaseSchemaEngine.Helper.Cache
 {
 	public sealed class SchemaMappingCache
 	{
+		public static HashSet<string> EntityNameValidationCache = new HashSet<string>();
+		public static HashSet<string> AttributeNameValidationCache = new HashSet<string>();
 
 		private static SchemaMappingCache? schemaMappingCache;
 		private static Dictionary<string, SchemaMappingDetail>? schemaMappings;

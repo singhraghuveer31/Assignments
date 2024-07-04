@@ -1,7 +1,10 @@
-﻿namespace DatabaseSchemaEngine.Model.DomainModelGenerator
+﻿using DatabaseSchemaEngine.Model.EntityDetail;
+
+namespace DatabaseSchemaEngine.Model.DomainModelGenerator
 {
 	public interface IDomainModelGenerator
 	{
-		void GenerateDomainModel();
+		IModelGenerationOutput Output { get; }
+		void GenerateDomainModel(IEnumerable<IEntityDetail> entityDetails);
 	}
 }

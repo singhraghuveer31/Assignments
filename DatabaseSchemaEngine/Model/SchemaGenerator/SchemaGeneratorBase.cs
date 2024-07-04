@@ -86,7 +86,7 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 			var templateContent = string.Empty;
 			try
 			{
-				var templatePath = Path.Combine(Constants.SchemaGeneratorConstant.TemplateFolderPath, templateFileName);
+				var templatePath = Path.Combine(Constants.SFCDBSchemaGeneratorConstant.TemplateFolderPath, templateFileName);
 				if (!File.Exists(templatePath))
 				{
 					throw new Exception($"Invalid configuration for schema mapping file. File not found at path: {templatePath}");
@@ -126,7 +126,7 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 			content.Replace(GetPropertyPlaceHolder(), proprtyText);
 		}
 
-		private StringBuilder MapColumn(ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity, string columnTemplate, AttributeDetail attributeDetail)
+		private StringBuilder MapColumn(ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity, string columnTemplate, IAttributeDetail attributeDetail)
 		{
 			StringBuilder columnContent = new StringBuilder().Append(columnTemplate);
 			var propType = GetTypeMapping(schemaMappingDetail.TypeMappings, attributeDetail, entity);
@@ -150,7 +150,7 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 			MapTableConstraints(content, schemaMappingDetail);
 		}
 
-		private string GetTypeMapping(Map<string, string> schemaMappings, AttributeDetail attributeDetail, IEntityDetail entity)
+		private string GetTypeMapping(Map<string, string> schemaMappings, IAttributeDetail attributeDetail, IEntityDetail entity)
 		{
 			if (schemaMappings.Forward.ContainsKey(attributeDetail.Type))
 			{

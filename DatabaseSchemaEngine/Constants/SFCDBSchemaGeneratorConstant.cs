@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Defines constants required for schema generator.
 	/// </summary>
-	public class SchemaGeneratorConstant
+	public class SFCDBSchemaGeneratorConstant
 	{
 		/// <summary>
 		/// Defines templates folder path.
@@ -13,41 +13,41 @@
 		/// <summary>
 		/// Defile the template file path for data store of SFCDB database schema generation.
 		/// </summary>
-		public const string SFCDBDataStoreTemplateFileName = "SFCDB\\SFCDBDataStoreTemplate.df";
+		public const string DataStoreTemplateFileName = "SFCDB\\SFCDBDataStoreTemplate.df";
 
 		/// <summary>
 		/// Defile the template file path for properties of SFCDB database schema generation.
 		/// </summary>
-		public const string SFCDBPropTemplateFileName = "SFCDB\\SFCDBPropTemplate.df";
+		public const string PropTemplateFileName = "SFCDB\\SFCDBPropTemplate.df";
 
 		/// <summary>
 		/// Define the tag for data store name in SFCDB template file.
 		/// </summary>
-		public const string SFCDBDataStoreNameTag = "<data store name>";
+		public const string DataStoreNameTag = "<data store name>";
 
 		/// <summary>
 		/// Defines the placeholder for properties data store in SFCDB template file.
 		/// </summary>
-		public const string SFCDBDataStorePropertyTag = "<prop>";
+		public const string DataStorePropertyTag = "<prop>";
 
 		/// <summary>
 		/// Defines the tag for property name in SFCDB template file.
 		/// </summary>
-		public const string SFCDBDataPropertyNameTag = "<property name>";
+		public const string DataPropertyNameTag = "<property name>";
 
 		/// <summary>
 		/// Defines the tag for type specification in SFCDB template file.
 		/// </summary>
-		public const string SFCDBDataTypeNameTag = "<type specification>";
+		public const string DataTypeNameTag = "<type specification>";
 
 		/// <summary>
 		/// Defines the separator for multi definition in SFCDB template file.
 		/// </summary>
-		public const string SFCDBMultiDefSeparator = "// ---";
+		public const string MultiDefSeparator = "// ---";
 
 		/// <summary>
-		/// Defines the separator for multi definition in SFCDB template file.
+		/// Defines the output path for SFCDB schema file.
 		/// </summary>
-		public const string SFCDBSchemaOutputPath = "C:\\SchemaGenerationOutput\\";
+		public const string SchemaOutputPath = "C:\\SchemaGenerationOutput\\";
 	}
 }

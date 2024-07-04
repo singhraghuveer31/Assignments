@@ -53,7 +53,7 @@ namespace DatabaseSchemaEngine.Model.SchemaFileParser
 
 		private string GetOutputSchemaFile()
 		{
-			var outputFolder = Constants.SchemaGeneratorConstant.SFCDBSchemaOutputPath;
+			var outputFolder = Constants.SFCDBSchemaGeneratorConstant.SchemaOutputPath;
 
 			var files = Directory.GetFiles(outputFolder);
 
@@ -68,7 +68,7 @@ namespace DatabaseSchemaEngine.Model.SchemaFileParser
 
 		private List<IEntityDetail> ParseSchemaFile(string file)
 		{
-			var dataStores = file.Split(Constants.SchemaGeneratorConstant.SFCDBMultiDefSeparator);
+			var dataStores = file.Split(Constants.SFCDBSchemaGeneratorConstant.MultiDefSeparator);
 
 			var entityDetails = new List<IEntityDetail>();
 
@@ -103,11 +103,11 @@ namespace DatabaseSchemaEngine.Model.SchemaFileParser
 				}
 
 				var properties = dataStoreDef.Split(Constants.SchemaParserConstant.SFCDBPropStatement);
-				var attributes = new List<AttributeDetail>();
+				var attributes = new List<IAttributeDetail>();
 
 				foreach (var property in properties)
 				{
-					var attribute = GetAttribute(property);
+					var attribute = GetAttribute(property, entityName);
 					if (attribute != null)
 					{
 						attributes.Add(attribute);
@@ -156,7 +156,7 @@ namespace DatabaseSchemaEngine.Model.SchemaFileParser
 			return dataStoreDef;
 		}
 
-		private AttributeDetail? GetAttribute(string property)
+		private AttributeDetail? GetAttribute(string property, string entityName)
 		{
 			AttributeDetail? attribute = null;
 			try
@@ -165,7 +165,7 @@ namespace DatabaseSchemaEngine.Model.SchemaFileParser
 				var name = propNamTypePair[0];
 				var type = GetTypeMapping(propNamTypePair[1]);
 
-				attribute = new AttributeDetail(name, type);
+				attribute = new AttributeDetail(name, type, entityName);
 			}
 			catch (Exception ex) 
 			{

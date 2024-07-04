@@ -1,9 +1,11 @@
 ﻿
+using DatabaseSchemaEngine.Validator;
+
 namespace DatabaseSchemaEngine.Model.EntityDetail
 {
-	public interface IEntityDetail
+	public interface IEntityDetail : IValidatable
 	{
-		List<AttributeDetail> Attributes { get; set; }
+		List<IAttributeDetail> Attributes { get; set; }
 		string EnityName { get; set; }
 	}
 }
