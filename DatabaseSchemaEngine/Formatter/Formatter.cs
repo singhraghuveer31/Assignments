@@ -4,7 +4,7 @@
 	{
 		private static Dictionary<string, List<IFormatRule>> _formatters = new Dictionary<string, List<IFormatRule>>();
 
-		public static void RegisterValidatorFor(string typeName, IFormatRule formatRule)
+		public static void RegisterFormatterFor(string typeName, IFormatRule formatRule)
 		{
 			if (_formatters.ContainsKey(typeName))
 			{

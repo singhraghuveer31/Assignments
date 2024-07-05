@@ -9,32 +9,40 @@ using DomainModelEditor.UserControl;
 using System.Collections.Generic;
 using DatabaseSchemaEngine.Model.EntityDetail;
 using System.Linq;
+using DatabaseSchemaEngine.Enum;
+using System;
+using DatabaseSchemaEngine.Lookup;
 
 namespace DomainModelEditor.ViewModel
 {
-	/// <summary>
-	/// Defines View Model for  GenerateSchemaDialog view.
-	/// </summary>
-	public class GenerateSchemaDialogViewModel : BaseViewModel<GenerateSchemaDialogViewModel>
+    /// <summary>
+    /// Defines View Model for  GenerateSchemaDialog view.
+    /// </summary>
+    public class GenerateSchemaDialogViewModel : BaseViewModel<GenerateSchemaDialogViewModel>
 	{
 		#region Constructor
 
-		public GenerateSchemaDialogViewModel(IDatabaseSchemaGeneratorService databaseSchemaGeneratorService)
+		public GenerateSchemaDialogViewModel(IDatabaseSchemaGeneratorService databaseSchemaGeneratorService, IGenerateSchemaRepository generateSchemaRepository)
 		{
-			this.CloseWindowCommand = new RelayCommand<Window>(this.CloseWindow);
+            this.databaseSchemaGeneratorService = databaseSchemaGeneratorService;
+            this.generateSchemaRepository = generateSchemaRepository;
+            this.CloseWindowCommand = new RelayCommand<Window>(this.CloseWindow);
 			Initialize();
-			this.databaseSchemaGeneratorService = databaseSchemaGeneratorService;
-		}
+        }
 
 		#endregion
 
 		#region Fields
 
 		private ICommand generateSchemaClickCommand;
-		private ObservableCollection<string> targetFrameworks;
-		private string selectedTargetFramework;
-		private readonly IDatabaseSchemaGeneratorService databaseSchemaGeneratorService;
-		private readonly IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
+		private ObservableCollection<ILookup> targetFrameworks;
+		private ILookup selectedTargetFramework;
+        private ObservableCollection<CheckListItem> schemaGenerationOptions;
+        private ObservableCollection<ILookup> namingConventions;
+        private ILookup selectedNamingConvention;
+        private readonly IDatabaseSchemaGeneratorService databaseSchemaGeneratorService;
+        private readonly IGenerateSchemaRepository generateSchemaRepository;
+        private readonly IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
 
         #endregion
 
@@ -42,9 +50,13 @@ namespace DomainModelEditor.ViewModel
 
         public List<IEntityViewModel> Entities { get; set; }
 
-        public ObservableCollection<string> TargetFrameworks { get { return targetFrameworks; } }
+        public ObservableCollection<ILookup> TargetFrameworks { get { return targetFrameworks; } }
 
-		public string SelectedTargetFramework
+        public ObservableCollection<CheckListItem> SchemaGenerationOptions { get { return schemaGenerationOptions; } }
+
+        public ObservableCollection<ILookup> NamingConventions { get { return namingConventions; } }
+
+        public ILookup SelectedTargetFramework
 		{
 			get
 			{
@@ -57,11 +69,23 @@ namespace DomainModelEditor.ViewModel
 			}
 		}
 
-		#endregion
+        public ILookup SelectedNamingConvention
+        {
+            get
+            {
+                return selectedNamingConvention;
+            }
+            set
+            {
+                selectedNamingConvention = value;
+                NotifyPropertyChanged(nameof(SelectedNamingConvention));
+            }
+        }
+        #endregion
 
-		#region Commands
+        #region Commands
 
-		public RelayCommand<Window> CloseWindowCommand { get; private set; }
+        public RelayCommand<Window> CloseWindowCommand { get; private set; }
 
 		public ICommand GenerateSchemaClickCommand
 		{
@@ -82,30 +106,52 @@ namespace DomainModelEditor.ViewModel
 		private void Initialize()
 		{
 			LoadTargetFrameworks();
-
-			if (selectedTargetFramework == null) 
-			{
-				SelectedTargetFramework = Constants.SchemaGenrationConstant.DEFAULT;
-			}
+            LoadSchemaGenerationOptions();
+            LoadNamingConventions();
 		}
 
 		private void LoadTargetFrameworks()
 		{
-			targetFrameworks = new ObservableCollection<string>();
-			foreach (var item in GenerateSchemaRepository.GetTargetFrameworks())
+			targetFrameworks = new ObservableCollection<ILookup>();
+			foreach (var item in generateSchemaRepository.GetTargetFrameworks())
 			{
 				targetFrameworks.Add(item);
 			};
 		}
 
-		private void GenerateSchema(Window win)
+        private void LoadSchemaGenerationOptions()
+        {
+            schemaGenerationOptions = new ObservableCollection<CheckListItem>();
+            foreach (var item in generateSchemaRepository.GetSchemaGenerationOptions())
+            {
+                schemaGenerationOptions.Add(new CheckListItem {Lookup = item } );
+            };
+        }
+
+        private void LoadNamingConventions()
+        {
+            namingConventions = new ObservableCollection<ILookup>();
+            foreach (var item in generateSchemaRepository.GetNamingConventions())
+            {
+                namingConventions.Add(item);
+            };
+        }
+
+        private void GenerateSchema(Window win)
 		{
-			if (!IsValidated()) 
-			{
-				return;
-			}
-			GenerateDatabaseSchema();
-			CloseWindow(win);
+            try
+            {
+                if (!IsValidated())
+                {
+                    return;
+                }
+                GenerateDatabaseSchema();
+                CloseWindow(win);
+            }
+            catch (Exception ex) 
+            {
+                Logger.Error("Error occurred while generateing database schema.", ex);
+            }
 		}
 
 		private void CloseWindow(Window window)
@@ -129,17 +175,44 @@ namespace DomainModelEditor.ViewModel
 
 		private void GenerateDatabaseSchema() 
 		{
-			var entityDetails = new List<IEntityDetail>();
+            var schemaGenerationInput = PrepareSchemaGenerationInput();
 
-			foreach (var entity in Entities) 
-			{
-				var attribures = entity.Attributes.Select(x=> new AttributeDetail(x.DataType.ToString(), x.Name, entity.Name)).ToList<IAttributeDetail>();
-				entityDetails.Add(new EntityDetail(entity.Name, attribures));
-			}
-
-            databaseSchemaGeneratorService.GenerateDatabaseSchema(SelectedTargetFramework, entityDetails);
+            databaseSchemaGeneratorService.GenerateDatabaseSchema(schemaGenerationInput);
         }
 
-		#endregion
-	}
+        private ISchemaGenerationInput PrepareSchemaGenerationInput() 
+        {
+            var entityDetails = new List<IEntityDetail>();
+
+            foreach (var entity in Entities)
+            {
+                var attribures = entity.Attributes.Select(x => new AttributeDetail(x.DataType.ToString(), x.Name, entity.Name)).ToList<IAttributeDetail>();
+                entityDetails.Add(new EntityDetail(entity.Name, attribures));
+            }
+
+            var schemaGenerationOptions = SchemaGenerationOptions.Where(x => x.Checked).Select(x => x.Lookup);
+
+            return new SchemaGenerationInput
+            {
+                TargetFramework = GetTargetFramework(),
+                EntityDetails = entityDetails,
+                SchemaGenerationOptions = schemaGenerationOptions
+            };
+        }
+
+        private TargetDatabaseFrameworkValues GetTargetFramework() 
+        {
+            try
+            {
+                Enum.TryParse(SelectedTargetFramework.Code, out TargetDatabaseFrameworkValues result);
+                return result;
+            }
+            catch
+            {
+                throw new Exception($"Database framework: {SelectedTargetFramework.Name} not supported"); 
+            }
+        }
+
+        #endregion
+    }
 }

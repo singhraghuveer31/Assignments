@@ -1,15 +1,16 @@
 ﻿namespace DomainModelEditor.Validations
 {
 	using Constants;
-	
-	/// <summary>
-	/// Validations for GenerateSchemaDialog window.
-	/// </summary>
-	public static class GenerateSchemaDialogValidator
+    using DatabaseSchemaEngine.Lookup;
+
+    /// <summary>
+    /// Validations for GenerateSchemaDialog window.
+    /// </summary>
+    public static class GenerateSchemaDialogValidator
 	{
-		public static bool IsSelectedDataBaseSchemaValid(string selectedValue) 
+		public static bool IsSelectedDataBaseSchemaValid(ILookup selectedValue) 
 		{
-			return selectedValue != null && !selectedValue.Equals(SchemaGenrationConstant.DEFAULT);
+			return selectedValue != null && selectedValue.Code != null;
 		}
 	}
 }

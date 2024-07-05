@@ -4,7 +4,7 @@ using DatabaseSchemaEngine.Validator.ValidationMessage;
 namespace DatabaseSchemaEngine.Model.EntityDetail
 {
 	using DatabaseSchemaEngine.Formatter;
-	public class EntityDetail : IEntityDetail, IValidatable, IFormattable
+	public class EntityDetail : IEntityDetail
 	{
 		public EntityDetail(string enityName, List<IAttributeDetail> attributes)
 		{
@@ -30,7 +30,7 @@ namespace DatabaseSchemaEngine.Model.EntityDetail
 
 		public void Format(IFormatRule formatRule)
 		{
-			throw new NotImplementedException();
+			formatRule.Format(EnityName);
 		}
 	}
 }

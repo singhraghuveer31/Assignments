@@ -32,7 +32,7 @@ namespace DatabaseSchemaEngine.Helper.Cache
 			return schemaMappingCache;
 		}
 
-		public SchemaMappingDetail? GetSchemaMappings(Enum.TragetDatabaseFrameworkValues targetFramework) 
+		public SchemaMappingDetail? GetSchemaMappings(Enum.TargetDatabaseFrameworkValues targetFramework) 
 		{
 			if(schemaMappings != null && schemaMappings.ContainsKey(targetFramework.ToString()))
 				return schemaMappings[targetFramework.ToString()];

@@ -3,7 +3,8 @@ using DatabaseSchemaEngine.Validator;
 
 namespace DatabaseSchemaEngine.Model.EntityDetail
 {
-	public interface IEntityDetail : IValidatable
+	using DatabaseSchemaEngine.Formatter;
+	public interface IEntityDetail : IValidatable, IFormattable
 	{
 		List<IAttributeDetail> Attributes { get; set; }
 		string EnityName { get; set; }

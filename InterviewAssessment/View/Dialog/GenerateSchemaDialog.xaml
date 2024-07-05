@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:VM="clr-namespace:DomainModelEditor.ViewModel"
         mc:Ignorable="d"
-        Title="Generate Schema" Height="233" Width="512"
-        AutomationProperties.AutomationId="GenerateSchemaDialog">
-    <StackPanel HorizontalAlignment="Center" Width="512" Height="217" VerticalAlignment="Top">
+        Title="Generate Schema" Height="214" Width="556"
+        AutomationProperties.AutomationId="GenerateSchemaDialog" WindowStartupLocation="CenterScreen">
+    <StackPanel HorizontalAlignment="Center" Width="536" Height="178" VerticalAlignment="Top">
         <Grid Height="126" Width="503" HorizontalAlignment="Right" RenderTransformOrigin="0.468,0.481">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="207*"/>
@@ -18,9 +18,9 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,294,-84" Grid.ColumnSpan="2">
                 <Label Content="Database Framework" Height="92" VerticalContentAlignment="Bottom" Width="207"/>
-                <ComboBox  SelectedValue="{Binding SelectedTargetFramework}" ItemsSource="{Binding TargetFrameworks, Mode=OneWay}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" BorderThickness="2,2,2,2" Width="206"/>
+                <ComboBox  SelectedValue="{Binding SelectedTargetFramework}" ItemsSource="{Binding TargetFrameworks, Mode=OneWay}" DisplayMemberPath="Name" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="30" BorderThickness="2,2,2,2" Width="206"/>
             </StackPanel>
-            <GroupBox Header="Schema Generation Options" Grid.Column ="1" Margin="0,-5,0,-84" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Center" Width="258" BorderThickness="2,2,2,2" ClipToBounds="True">
+            <GroupBox Header="Schema Generation Options" Grid.Column ="1" Margin="0,-5,0,-84" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Center" Width="294" BorderThickness="2,2,2,2" ClipToBounds="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120"/>
@@ -30,9 +30,17 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <ComboBox Grid.Column="1" VerticalAlignment="Center" RenderTransformOrigin="1.269,0.58" Margin="0,0,-76,0"/>
+                    <ComboBox Grid.Column="1" SelectedValue="{Binding SelectedNamingConvention}" ItemsSource="{Binding NamingConventions, Mode=OneWay}" DisplayMemberPath="Name" VerticalAlignment="Center" RenderTransformOrigin="1.269,0.58" Margin="0,0,-98,0"/>
                     <Label Content="Naming Convention" HorizontalAlignment="Left" VerticalAlignment="Center" Width="117"/>
-                    <GroupBox Header="Other Options" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,-83,-80"/>
+                    <GroupBox Header="Other Options" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,2,-104,-82">
+                        <ItemsControl x:Name="myItemsControl" ItemsSource="{Binding SchemaGenerationOptions}" Margin="0,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Lookup.Name}" IsChecked="{Binding Checked}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
                 </Grid>
             </GroupBox>
         </Grid>

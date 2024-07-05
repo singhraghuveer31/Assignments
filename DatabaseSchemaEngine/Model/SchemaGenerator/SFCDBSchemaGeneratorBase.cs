@@ -27,11 +27,11 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 			try
 			{
 
-				schemaMappingDetail = cache.GetSchemaMappings(Enum.TragetDatabaseFrameworkValues.SFCDB);
+				schemaMappingDetail = cache.GetSchemaMappings(Enum.TargetDatabaseFrameworkValues.SFCDB);
 
 				if (schemaMappingDetail == null)
 				{
-					throw new Exception($"Mapping details not found for database framework: {Enum.TragetDatabaseFrameworkValues.SFCDB}");
+					throw new Exception($"Mapping details not found for database framework: {Enum.TargetDatabaseFrameworkValues.SFCDB}");
 				}
 			}
 			catch (Exception ex)

@@ -17,7 +17,7 @@ namespace DatabaseSchemaEngine.Repository
 			sfcdbTypeMap.Add("Int", "numerical");
 
 			var schemaMappingDetails = new SchemaMappingDetail(sfcdbTypeMap, SFCDBSchemaGeneratorConstant.DataStoreTemplateFileName, SFCDBSchemaGeneratorConstant.PropTemplateFileName, "mdl", "cs");
-			results.Add(Enum.TragetDatabaseFrameworkValues.SFCDB.ToString(), schemaMappingDetails);
+			results.Add(Enum.TargetDatabaseFrameworkValues.SFCDB.ToString(), schemaMappingDetails);
 
 			return results;
 		}

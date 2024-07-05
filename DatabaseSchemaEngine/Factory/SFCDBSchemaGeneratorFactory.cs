@@ -1,5 +1,6 @@
 ﻿using DatabaseSchemaEngine.Formatter.FormatProvider;
 using DatabaseSchemaEngine.Formatter.FormatProvider.SFCDB;
+using DatabaseSchemaEngine.Lookup;
 using DatabaseSchemaEngine.Model.DomainModelGenerator;
 using DatabaseSchemaEngine.Model.SchemaGenerator;
 using DatabaseSchemaEngine.Model.SchemaMapper;
@@ -37,7 +38,6 @@ namespace DatabaseSchemaEngine.Factory
 		public IValidatorProvider GetValidatorProvider() 
 		{
 			var validationResistration = new SFCDBSchemaValidatorProvider(GetValidationMessageProvider());
-			validationResistration.Register();
 			return validationResistration;
 		}
 
@@ -46,10 +46,9 @@ namespace DatabaseSchemaEngine.Factory
 			return new SFCDBValidationMessageProvider();
 		}
 
-		public IFormatterProvider GetFormatterProvider() 
+		public IFormatterProvider GetFormatterProvider(IEnumerable<ILookup> schemaGenerationOptions) 
 		{
-			var formatterProvider = new SFCDBFormatterProvider();
-			formatterProvider.Register();
+			var formatterProvider = new SFCDBFormatterProvider(schemaGenerationOptions);
 			return formatterProvider;
 		}
 

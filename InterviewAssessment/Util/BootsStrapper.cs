@@ -9,6 +9,7 @@ using DatabaseSchemaEngine.Service.SchemaGeneration;
 using DomainModelEditor.Behaviour;
 using DomainModelEditor.Model;
 using DomainModelEditor.Properties;
+using DomainModelEditor.Repository;
 using DomainModelEditor.View.Dialog;
 using DomainModelEditor.ViewModel;
 using Serilog;
@@ -109,12 +110,14 @@ namespace DomainModelEditor.Util
 			builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             var databaseSchemaGenerationService = new DatabaseSchemaGenerationService(Logger);
+            var generateSchemaRepository = new GenerateSchemaRepository();
 			builder.RegisterInstance<IDatabaseSchemaGeneratorService>(databaseSchemaGenerationService);
 			builder.RegisterType<GenerateSchemaDialog>().
 			WithParameters(new List<Parameter>
 			{
 				new TypedParameter(typeof(IDatabaseSchemaGeneratorService), databaseSchemaGenerationService),
-			});
+                new TypedParameter(typeof(IGenerateSchemaRepository), generateSchemaRepository),
+            });
 		}
 
         public static T Resolve<T>()

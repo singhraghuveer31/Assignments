@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Defines the available target database frameworks.
 	/// </summary>
-	public enum TragetDatabaseFrameworkValues
+	public enum TargetDatabaseFrameworkValues
 	{
 		/// <summary>
 		/// Specifies SFCDB database framework
@@ -30,9 +30,15 @@
 		UnderScore
 	}
 
-	public enum TypeName 
+	public enum TypeNameValues 
 	{
 		Entity,
 		Attibute
+	}
+
+	public enum SchemaGenerationOptionValues
+	{
+		ReplaceSpaceWithUnderScore,
+		AnotherOption
 	}
 }

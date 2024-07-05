@@ -1,12 +1,13 @@
-﻿using Serilog;
+﻿using DatabaseSchemaEngine.Enum;
+using Serilog;
 
 namespace DatabaseSchemaEngine.Factory
 {
 	public class FactoryProvider
 	{
-		public static ISchemaGeneratorFactory GetSchemaGeneratorFactory(string targetFramework, ILogger logger)
+		public static ISchemaGeneratorFactory GetSchemaGeneratorFactory(TargetDatabaseFrameworkValues targetFramework, ILogger logger)
 		{
-			if (targetFramework.Equals(Enum.TragetDatabaseFrameworkValues.SFCDB.ToString())) 
+			if (targetFramework.Equals(TargetDatabaseFrameworkValues.SFCDB)) 
 			{
 				return new SFCDBSchemaGeneratorFactory(logger);
 			}

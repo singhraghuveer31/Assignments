@@ -1,4 +1,5 @@
 ﻿using DatabaseSchemaEngine.Formatter.FormatProvider;
+using DatabaseSchemaEngine.Lookup;
 using DatabaseSchemaEngine.Model.DomainModelGenerator;
 using DatabaseSchemaEngine.Model.SchemaGenerator;
 using DatabaseSchemaEngine.Model.SchemaMapper;
@@ -14,7 +15,7 @@ namespace DatabaseSchemaEngine.Factory
 		IValidatorProvider GetValidatorProvider();
 
 		IValidationMessageProvider GetValidationMessageProvider();
-		IFormatterProvider GetFormatterProvider();
+		IFormatterProvider GetFormatterProvider(IEnumerable<ILookup> schemaGenerationOptions);
 		IDomainModelGenerator GetDomainModelGenerator();
 	}
 }

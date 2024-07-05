@@ -19,27 +19,27 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			Output = new SchemaGenerationOutput(string.Empty, string.Empty, new List<string>());
 		}
 
-		public void GenerateDatabaseSchema(string targetFramework, IEnumerable<IEntityDetail> entityDetails)
+		public void GenerateDatabaseSchema(ISchemaGenerationInput schemaGenerationInput)
 		{
 			try
 			{
-				var factory = FactoryProvider.GetSchemaGeneratorFactory(targetFramework, logger);
+				var factory = FactoryProvider.GetSchemaGeneratorFactory(schemaGenerationInput.TargetFramework, logger);
 
 				//Validate.
-				if (!Validate(factory, entityDetails))
+				if (!Validate(factory, schemaGenerationInput.EntityDetails))
 				{
 					return;
 				}
 
 				//Format.
-				var formmatedData = Format(factory, entityDetails);
+				var formmatedData = Format(factory, schemaGenerationInput);
 
 				//Generate.
 				var generator = factory.GetDatabaseSchemaGenerator();
 				generator?.GenerateDatabaseSchema(formmatedData);
 
 				//Store Metadata.
-				GenerateDomainModelMetaData(factory, entityDetails);
+				GenerateDomainModelMetaData(factory, schemaGenerationInput.EntityDetails);
 			}
 			catch (Exception ex)
 			{
@@ -72,12 +72,12 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			return true;
 		}
 
-		private List<IEntityDetail> Format(ISchemaGeneratorFactory schemaGeneratorFactory, IEnumerable<IEntityDetail> entityDetails)
+		private List<IEntityDetail> Format(ISchemaGeneratorFactory schemaGeneratorFactory, ISchemaGenerationInput schemaGenerationInput)
 		{
-			var entities = entityDetails.ToList();
+			var entities = schemaGenerationInput.EntityDetails.ToList();
 			try
 			{
-				var formatterProvider = schemaGeneratorFactory.GetFormatterProvider();
+				var formatterProvider = schemaGeneratorFactory.GetFormatterProvider(schemaGenerationInput.SchemaGenerationOptions);
 				formatterProvider.Format(entities);
 			}
 			catch (Exception ex)

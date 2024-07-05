@@ -14,9 +14,10 @@ namespace DatabaseSchemaEngine.Validator.ValidatorProvider.SFCDB
 		public SFCDBSchemaValidatorProvider(IValidationMessageProvider validationMessageProvider)
 		{
 			this.validationMessageProvider = validationMessageProvider;
+			Register();
 		}
 
-		public void Register()
+		private void Register()
 		{
 			RegisterEntityValidators();
 			RegisterAttributeValidators();
@@ -29,7 +30,7 @@ namespace DatabaseSchemaEngine.Validator.ValidatorProvider.SFCDB
 			RegisterEntityValidator(new LengthValidationRule(ValidationConstant.SFCDBDataStoreLength, ValidationConstant.SFCDBDataStoreLength));
 			RegisterEntityValidator(new PrefixValidationRule(Enum.PrefixConventionValues.Letter));
 			RegisterEntityValidator(new SpecialCharacterValidationRule(ValidationConstant.SFCDBAllowedSpecialChars));
-			RegisterEntityValidator(new UniqueNameValidationRule(Enum.TypeName.Entity));
+			RegisterEntityValidator(new UniqueNameValidationRule(Enum.TypeNameValues.Entity));
 		}
 
 		private static void RegisterAttributeValidators()
@@ -38,7 +39,7 @@ namespace DatabaseSchemaEngine.Validator.ValidatorProvider.SFCDB
 			RegisterAttributeValidator(new LengthValidationRule(ValidationConstant.SFCDBDataStoreLength, ValidationConstant.SFCDBDataStoreLength));
 			RegisterAttributeValidator(new PrefixValidationRule(Enum.PrefixConventionValues.Letter));
 			RegisterAttributeValidator(new SpecialCharacterValidationRule(ValidationConstant.SFCDBAllowedSpecialChars));
-			RegisterAttributeValidator(new UniqueNameValidationRule(Enum.TypeName.Attibute));
+			RegisterAttributeValidator(new UniqueNameValidationRule(Enum.TypeNameValues.Attibute));
 		}
 
 		private static void RegisterEntityValidator(IValidationRule rule)
