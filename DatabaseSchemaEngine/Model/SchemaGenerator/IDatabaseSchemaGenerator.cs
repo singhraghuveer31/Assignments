@@ -7,6 +7,10 @@
     /// </summary>
     public interface IDatabaseSchemaGenerator
     {
+		/// <summary>
+		/// Generates database schema.
+		/// </summary>
+		/// <param name="entityDetails"></param>
         public void GenerateDatabaseSchema(IEnumerable<IEntityDetail> entityDetails);
     }
 }

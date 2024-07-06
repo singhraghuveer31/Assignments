@@ -18,15 +18,34 @@
 
 		public static List<IFormatRule> GetFormatterFor(string typeName)
 		{
-			return _formatters[typeName];
+			_formatters.TryGetValue(typeName, out List<IFormatRule> rules);
+			return rules;
+		}
+
+		public static void ClearFormatRules() 
+		{
+			_formatters.Clear();
 		}
 
 		public static void Format<T>(this T entity) where T : IFormattable
 		{
-			List<IFormatRule> formatRules = GetFormatterFor(entity.GetType().Name);
-			foreach (var rule in formatRules)
+			try
 			{
-				entity.Format(rule);
+				List<IFormatRule> formatRules = GetFormatterFor(entity.GetType().Name);
+
+				if (formatRules == null) 
+				{
+					return;
+				}
+
+				foreach (var rule in formatRules)
+				{
+					entity.Format(rule);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error while formatting the schema.", ex);
 			}
 		}
 	}

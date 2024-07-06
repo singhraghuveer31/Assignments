@@ -1,20 +1,16 @@
 ﻿namespace DatabaseSchemaEngine.Model.SchemaGenerator
 {
+	using DatabaseSchemaEngine.Helper;
 	using DatabaseSchemaEngine.Helper.FileHelper;
 	using DatabaseSchemaEngine.Model.SchemaMapper;
-	using DatabaseSchemaEngine.Repository;
-	using Serilog;
 
 	/// <summary>
 	/// Implementation for SFCDB schema generation.
 	/// </summary>
 	public class SFCDBSchemaGenerator : SchemaGeneratorBase
 	{
-		private readonly ILogger logger;
-
-		public SFCDBSchemaGenerator(IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository, ILogger logger, ISchemaMapper schemaMapper) : base(databaseSchemaGenerationRepository, logger, schemaMapper)
-		{
-			this.logger = logger;
+		public SFCDBSchemaGenerator(ISchemaMapper schemaMapper) : base(schemaMapper)
+		{ 
 		}
 
 		protected override string GetTableNameTag()
@@ -50,7 +46,7 @@
 			}
 			catch (Exception ex)
 			{
-				logger.Error(ex, "Failed to store file.");
+				throw new Exception("Failed to store file.", ex);
 			}
 		}
 
@@ -61,18 +57,28 @@
 			{
 				fileName = $"{DateTime.Now.ToString("yyy-dd-MM")}";
 
-				var outputDirectory = Constants.SFCDBSchemaGeneratorConstant.SchemaOutputPath;
+				var outputDirectory = Helper.Configuration.SFCDDatabaseSchemaOuputDirectory;
+
+				if (outputDirectory == null) 
+				{
+					throw new Exception("No configuration found for SFCDB Database schema output directory.");
+				}
 
 				fileName = FileNameHelper.GetNextFileName(fileName, outputDirectory, fileExtension);
 
-				fileName = $"{Path.Combine(Constants.SFCDBSchemaGeneratorConstant.SchemaOutputPath, fileName)}.{fileExtension}";
+				fileName = $"{Path.Combine(outputDirectory, fileName)}.{fileExtension}";
 			}
 			catch (Exception ex)
 			{
-				logger.Error(ex, "Error while getting the file name.");
+				throw new Exception("Error while getting the file name.", ex);
 			}
 
 			return fileName;
+		}
+
+		protected override string GetSchemaTemplateDirectoryPath(string templateFileName)
+		{
+			return Path.Combine(Configuration.SFCDDatabaseSchemaTemplateDirectory, templateFileName);
 		}
 	}
 }

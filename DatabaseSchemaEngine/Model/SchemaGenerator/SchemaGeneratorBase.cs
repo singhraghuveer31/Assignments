@@ -1,4 +1,5 @@
-﻿using DatabaseSchemaEngine.Helper;
+﻿using DatabaseSchemaEngine.Constants;
+using DatabaseSchemaEngine.Helper;
 using DatabaseSchemaEngine.Model.EntityDetail;
 using DatabaseSchemaEngine.Model.SchemaMapper;
 using DatabaseSchemaEngine.Model.SchemaMappingDetail;
@@ -8,164 +9,170 @@ using System.Text;
 
 namespace DatabaseSchemaEngine.Model.SchemaGenerator
 {
-	/// <summary>
-	/// Base class for schema generation, contains the generic implementation.
-	/// </summary>
-	public abstract class SchemaGeneratorBase : IDatabaseSchemaGenerator
-	{
-		protected IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
-		private readonly ILogger logger;
-		private readonly ISchemaMapper schemaMapper;
+    /// <summary>
+    /// Base class for schema generation, contains the generic implementation.
+    /// </summary>
+    public abstract class SchemaGeneratorBase : IDatabaseSchemaGenerator
+    {
+        protected IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
+        private readonly ISchemaMapper schemaMapper;
 
-		public SchemaGeneratorBase(IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository, ILogger logger, ISchemaMapper schemaMapper)
-		{
-			this.databaseSchemaGenerationRepository = databaseSchemaGenerationRepository;
-			this.logger = logger;
-			this.schemaMapper = schemaMapper;
-		}
+        public SchemaGeneratorBase(ISchemaMapper schemaMapper)
+        {
+            this.schemaMapper = schemaMapper;
+        }
 
-		private ISchemaMappingDetail? GetSchemaMappings() 
-		{
-			return schemaMapper.GetSchemaMappings();
-		}
+        private ISchemaMappingDetail? GetSchemaMappings()
+        {
+            return schemaMapper.GetSchemaMappings();
+        }
 
-		protected abstract string GetPropertyNamePlaceHolder();
+        protected abstract string GetPropertyNamePlaceHolder();
 
-		protected abstract string GetPropertyTypePlaceHolder();
+        protected abstract string GetPropertyTypePlaceHolder();
 
-		protected abstract string GetPropertyPlaceHolder();
+        protected abstract string GetPropertyPlaceHolder();
 
-		protected abstract string GetTableNameTag();
+        protected abstract string GetTableNameTag();
 
-		protected abstract void WriteFile(string content, string fileExtension);
+        protected abstract string GetSchemaTemplateDirectoryPath(string templateFileName);
 
-		protected abstract string GetMultiSchemaDefinitionSeparator();
+        protected abstract void WriteFile(string content, string fileExtension);
 
-		protected virtual void MapTableConstraints(StringBuilder content, ISchemaMappingDetail schemaMappingDetail) 
-		{
-		}
+        protected abstract string GetMultiSchemaDefinitionSeparator();
 
-		protected virtual void MapColumnConstraints(StringBuilder content, ISchemaMappingDetail schemaMappingDetail)
-		{
+        protected virtual void MapTableConstraints(StringBuilder content, ISchemaMappingDetail schemaMappingDetail)
+        {
+        }
 
-		}
+        protected virtual void MapColumnConstraints(StringBuilder content, ISchemaMappingDetail schemaMappingDetail)
+        {
 
-		public void GenerateDatabaseSchema(IEnumerable<IEntityDetail> entityDetails)
-		{
-			var mappings = GetSchemaMappings();
+        }
 
-			if (mappings == null)
-			{
-				return;
-			}
+        public void GenerateDatabaseSchema(IEnumerable<IEntityDetail> entityDetails)
+        {
+            try
+            {
+                var mappings = GetSchemaMappings();
 
-			var content = GenerateSchemaFile(mappings, entityDetails.ToList());
+                if (mappings == null)
+                {
+                    return;
+                }
 
-			if (!string.IsNullOrWhiteSpace(content)) 
-			{
-				WriteFile(content, mappings.SchemaFileExtension);
-			}
-		}
+                var content = GenerateSchemaFile(mappings, entityDetails.ToList());
 
-		private string GenerateSchemaFile(ISchemaMappingDetail schemaMappingDetail, List<IEntityDetail> entityDetails)
-		{
-			StringBuilder content = new StringBuilder();
+                if (!string.IsNullOrWhiteSpace(content))
+                {
+                    WriteFile(content, mappings.SchemaFileExtension);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Generate database schema failed.", ex);
+            }
+        }
 
-			foreach (var entity in entityDetails)
-			{
-				MapTableName(content, schemaMappingDetail, entity.EnityName);
-				MapColumns(content, schemaMappingDetail, entity);
-				AppendEntitySeparator(content);
-			}
+        private string GenerateSchemaFile(ISchemaMappingDetail schemaMappingDetail, List<IEntityDetail> entityDetails)
+        {
+            StringBuilder content = new StringBuilder();
 
-			return content.ToString();
-		}
+            foreach (var entity in entityDetails)
+            {
+                MapTableName(content, schemaMappingDetail, entity.EntityName);
+                MapColumns(content, schemaMappingDetail, entity);
+                AppendEntitySeparator(content);
+            }
 
-		private string GetTemplate(string templateFileName)
-		{
-			var templateContent = string.Empty;
-			try
-			{
-				var templatePath = Path.Combine(Constants.SFCDBSchemaGeneratorConstant.TemplateFolderPath, templateFileName);
-				if (!File.Exists(templatePath))
-				{
-					throw new Exception($"Invalid configuration for schema mapping file. File not found at path: {templatePath}");
-				}
+            return content.ToString();
+        }
 
-				templateContent = File.ReadAllText(templatePath);
-			}
-			catch (Exception ex)
-			{
-				logger.Error(ex, "Template file not found.");
-			}
-			return templateContent;
-		}
+        private string GetTemplate(string templateFileName)
+        {
+            var templateContent = string.Empty;
+            try
+            {
+                var templatePath = GetSchemaTemplateDirectoryPath(templateFileName);
+                if (!File.Exists(templatePath))
+                {
+                    throw new Exception($"{Common.InvalidConfigForTemplatePath}: {templatePath}");
+                }
 
-		private void MapColumns(StringBuilder content, ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity)
-		{
-			var columnTemplate = GetTemplate(schemaMappingDetail.ColumnTemplateFileName);
-			if (columnTemplate == string.Empty)
-			{
-				return;
-			}
+                templateContent = File.ReadAllText(templatePath);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Template file not found.", ex);
+            }
 
-			var propList = new List<string>();
-			foreach (var attributeDetail in entity.Attributes)
-			{
-				StringBuilder columnContent = MapColumn(schemaMappingDetail, entity, columnTemplate, attributeDetail);
+            return templateContent;
+        }
 
-				MapColumnConstraints(columnContent, schemaMappingDetail);
+        private void MapColumns(StringBuilder content, ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity)
+        {
+            var columnTemplate = GetTemplate(schemaMappingDetail.ColumnTemplateFileName);
+            if (columnTemplate == string.Empty)
+            {
+                return;
+            }
 
-				propList.Add(columnContent.ToString());
-			}
+            var propList = new List<string>();
+            foreach (var attributeDetail in entity.Attributes)
+            {
+                StringBuilder columnContent = MapColumn(schemaMappingDetail, entity, columnTemplate, attributeDetail);
 
-			var proprtyText = string.Empty;
-			if (propList.Any())
-				proprtyText = string.Join(Environment.NewLine, propList);
+                MapColumnConstraints(columnContent, schemaMappingDetail);
 
-			content.Replace(GetPropertyPlaceHolder(), proprtyText);
-		}
+                propList.Add(columnContent.ToString());
+            }
 
-		private StringBuilder MapColumn(ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity, string columnTemplate, IAttributeDetail attributeDetail)
-		{
-			StringBuilder columnContent = new StringBuilder().Append(columnTemplate);
-			var propType = GetTypeMapping(schemaMappingDetail.TypeMappings, attributeDetail, entity);
+            var proprtyText = string.Empty;
+            if (propList.Any())
+                proprtyText = string.Join(Environment.NewLine, propList);
 
-			if (propType == string.Empty)
-			{
-				return new StringBuilder(string.Empty);
-			}
+            content.Replace(GetPropertyPlaceHolder(), proprtyText);
+        }
 
-			columnContent.Replace(GetPropertyTypePlaceHolder(), propType).Replace(GetPropertyNamePlaceHolder(), attributeDetail.Name);
-			return columnContent;
-		}
+        private StringBuilder MapColumn(ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity, string columnTemplate, IAttributeDetail attributeDetail)
+        {
+            StringBuilder columnContent = new StringBuilder().Append(columnTemplate);
+            var propType = GetTypeMapping(schemaMappingDetail.TypeMappings, attributeDetail, entity);
 
-		private void MapTableName(StringBuilder content, ISchemaMappingDetail schemaMappingDetail, string entityName)
-		{
-			var tableTemplate = GetTemplate(schemaMappingDetail.TableTemplateFileName);
-			var tableContent = new StringBuilder(tableTemplate);
-			tableContent.Replace(GetTableNameTag(), entityName);
-			content.Append(tableContent);
+            if (propType == string.Empty)
+            {
+                return new StringBuilder(string.Empty);
+            }
 
-			MapTableConstraints(content, schemaMappingDetail);
-		}
+            columnContent.Replace(GetPropertyTypePlaceHolder(), propType).Replace(GetPropertyNamePlaceHolder(), attributeDetail.Name);
+            return columnContent;
+        }
 
-		private string GetTypeMapping(Map<string, string> schemaMappings, IAttributeDetail attributeDetail, IEntityDetail entity)
-		{
-			if (schemaMappings.Forward.ContainsKey(attributeDetail.Type))
-			{
-				return schemaMappings.Forward[attributeDetail.Type];
-			}
-			else
-			{
-				logger.Information($"Mapping not found for type: {attributeDetail.Type}, property: {attributeDetail.Name} in entity: {entity.EnityName}");
-				return string.Empty;
-			}
-		}
+        private void MapTableName(StringBuilder content, ISchemaMappingDetail schemaMappingDetail, string entityName)
+        {
+            var tableTemplate = GetTemplate(schemaMappingDetail.TableTemplateFileName);
+            var tableContent = new StringBuilder(tableTemplate);
+            tableContent.Replace(GetTableNameTag(), entityName);
+            content.Append(tableContent);
 
-		private void AppendEntitySeparator(StringBuilder content)
-		{
-			content.Append(Environment.NewLine).AppendLine(GetMultiSchemaDefinitionSeparator());
-		}
-	}
+            MapTableConstraints(content, schemaMappingDetail);
+        }
+
+        private string GetTypeMapping(Map<string, string> schemaMappings, IAttributeDetail attributeDetail, IEntityDetail entity)
+        {
+            if (schemaMappings.Forward.ContainsKey(attributeDetail.Type))
+            {
+                return schemaMappings.Forward[attributeDetail.Type];
+            }
+            else
+            {
+                throw new Exception(string.Format(Common.DataTypeMappingMissing, attributeDetail.Type,attributeDetail.Name, entity.EntityName));
+            }
+        }
+
+        private void AppendEntitySeparator(StringBuilder content)
+        {
+            content.Append(Environment.NewLine).AppendLine(GetMultiSchemaDefinitionSeparator());
+        }
+    }
 }

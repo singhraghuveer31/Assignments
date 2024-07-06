@@ -8,53 +8,49 @@ using DatabaseSchemaEngine.Repository;
 using DatabaseSchemaEngine.Validator.ValidationMessage;
 using DatabaseSchemaEngine.Validator.ValidatorProvider;
 using DatabaseSchemaEngine.Validator.ValidatorProvider.SFCDB;
-using Serilog;
 
 namespace DatabaseSchemaEngine.Factory
 {
-	public class SFCDBSchemaGeneratorFactory : ISchemaGeneratorFactory
-	{
-		private readonly ILogger logger;
+    /// <summary>
+    /// Prvides factory methods for SFCDB database schema generation.
+    /// </summary>
+    public class SFCDBSchemaGeneratorFactory : ISchemaGeneratorFactory
+    {
+        public IDatabaseSchemaGenerator GetDatabaseSchemaGenerator()
+        {
+            return new SFCDBSchemaGenerator(GetSchemaMapper());
+        }
 
-		public SFCDBSchemaGeneratorFactory(ILogger logger)
-		{
-			this.logger = logger;
-		}
-		public IDatabaseSchemaGenerator GetDatabaseSchemaGenerator()
-		{
-			return new SFCDBSchemaGenerator(GetSchemaGenerationRepository(), logger, GetSchemaMapper());
-		}
+        public ISchemaMapper GetSchemaMapper()
+        {
+            return new SFCDBSchemaMapper(GetSchemaGenerationRepository());
+        }
 
-		public ISchemaMapper GetSchemaMapper()
-		{
-			return new SFCDBSchemaMapper(GetSchemaGenerationRepository(), logger);
-		}
+        public IDatabaseSchemaGenerationRepository GetSchemaGenerationRepository()
+        {
+            return new DatabaseSchemaGenerationRepository();
+        }
 
-		public IDatabaseSchemaGenerationRepository GetSchemaGenerationRepository()
-		{
-			return new DatabaseSchemaGenerationRepository();
-		}
+        public IValidatorProvider GetValidatorProvider()
+        {
+            var validationResistration = new SFCDBSchemaValidatorProvider(GetValidationMessageProvider());
+            return validationResistration;
+        }
 
-		public IValidatorProvider GetValidatorProvider() 
-		{
-			var validationResistration = new SFCDBSchemaValidatorProvider(GetValidationMessageProvider());
-			return validationResistration;
-		}
+        public IValidationMessageProvider GetValidationMessageProvider()
+        {
+            return new SFCDBValidationMessageProvider();
+        }
 
-		public IValidationMessageProvider GetValidationMessageProvider()
-		{
-			return new SFCDBValidationMessageProvider();
-		}
+        public IFormatterProvider GetFormatterProvider(IEnumerable<ILookup> schemaGenerationOptions)
+        {
+            var formatterProvider = new SFCDBFormatterProvider(schemaGenerationOptions);
+            return formatterProvider;
+        }
 
-		public IFormatterProvider GetFormatterProvider(IEnumerable<ILookup> schemaGenerationOptions) 
-		{
-			var formatterProvider = new SFCDBFormatterProvider(schemaGenerationOptions);
-			return formatterProvider;
-		}
-
-		public IDomainModelGenerator GetDomainModelGenerator() 
-		{
-			return new DomainModelGenerator();
-		}
-	}
+        public IDomainModelMetadataGenerator GetDomainModelGenerator()
+        {
+            return new DomainModelMetadataGenerator();
+        }
+    }
 }

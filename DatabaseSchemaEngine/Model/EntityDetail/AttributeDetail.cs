@@ -6,10 +6,13 @@ namespace DatabaseSchemaEngine.Model.EntityDetail
 {
 	public class AttributeDetail : IAttributeDetail
 	{
+		public int Id { get; set; }
+
 		private readonly string entityName;
 
-		public AttributeDetail(string type, string name, string entityName)
+		public AttributeDetail(int id, string type, string name, string entityName)
 		{
+			Id = id;
 			Name = name;
 			this.entityName = entityName;
 			Type = type;
@@ -32,7 +35,7 @@ namespace DatabaseSchemaEngine.Model.EntityDetail
 
 		public void Format(IFormatRule formatRule)
 		{
-			throw new NotImplementedException();
+			Name = formatRule.Format(Name);
 		}
 	}
 }

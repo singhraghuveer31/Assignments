@@ -49,6 +49,7 @@ namespace DomainModelEditor.View
             try
             {
                 var popup = new AddEntityDialog();
+                popup.ShowDialog();
 
                 if (!string.IsNullOrWhiteSpace(popup.EntityName))
                 {

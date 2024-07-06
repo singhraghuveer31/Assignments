@@ -5,7 +5,14 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewAssessment", "InterviewAssessment\InterviewAssessment.csproj", "{997A2820-A70F-4A1B-A6E2-F2AA2A04BBB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseSchemaEngine", "DatabaseSchemaEngine\DatabaseSchemaEngine.csproj", "{DE76B698-3BE2-4880-9574-0A6483C98DE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseSchemaEngine", "DatabaseSchemaEngine\DatabaseSchemaEngine.csproj", "{DE76B698-3BE2-4880-9574-0A6483C98DE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseSchemaEngine.UnitTest", "DatabaseSchemaEngine.UnitTest\DatabaseSchemaEngine.UnitTest.csproj", "{BD0EFFB6-D3C5-48B3-9837-F7ACDBE8996E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E417395-B37B-4490-9EED-CBE1B2B04F9E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +28,10 @@ Global
 		{DE76B698-3BE2-4880-9574-0A6483C98DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE76B698-3BE2-4880-9574-0A6483C98DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE76B698-3BE2-4880-9574-0A6483C98DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD0EFFB6-D3C5-48B3-9837-F7ACDBE8996E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD0EFFB6-D3C5-48B3-9837-F7ACDBE8996E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0EFFB6-D3C5-48B3-9837-F7ACDBE8996E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD0EFFB6-D3C5-48B3-9837-F7ACDBE8996E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 
 namespace DatabaseSchemaEngine.Model.DomainModelGenerator
 {
-	public interface IDomainModelGenerator
+	public interface IDomainModelMetadataGenerator
 	{
 		IModelGenerationOutput Output { get; }
 		void GenerateDomainModel(IEnumerable<IEntityDetail> entityDetails);

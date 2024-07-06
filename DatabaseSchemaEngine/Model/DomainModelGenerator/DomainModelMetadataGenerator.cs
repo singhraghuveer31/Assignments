@@ -5,18 +5,18 @@ using Newtonsoft.Json;
 
 namespace DatabaseSchemaEngine.Model.DomainModelGenerator
 {
-	public class DomainModelGenerator : IDomainModelGenerator
+	public class DomainModelMetadataGenerator : IDomainModelMetadataGenerator
 	{
 		public IModelGenerationOutput Output { get; protected set; }
 
-		public DomainModelGenerator() 
+		public DomainModelMetadataGenerator() 
 		{
 			Output = new ModelGenerationOutput();
 		}
 
 		public void GenerateDomainModel(IEnumerable<IEntityDetail> entityDetails)
 		{
-			Output.Content = JsonConvert.SerializeObject(entityDetails);
+			Output.Content = JsonConvert.SerializeObject(entityDetails, Formatting.Indented);
 			FileWriterHelper.WriteFile(GetFileName, Output.Content);
 		}
 

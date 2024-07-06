@@ -6,7 +6,8 @@ namespace DatabaseSchemaEngine.Model.EntityDetail
 	using DatabaseSchemaEngine.Formatter;
 	public interface IEntityDetail : IValidatable, IFormattable
 	{
-		List<IAttributeDetail> Attributes { get; set; }
-		string EnityName { get; set; }
+		int Id { get; set; }
+		List<AttributeDetail> Attributes { get; set; }
+		string EntityName { get; set; }
 	}
 }

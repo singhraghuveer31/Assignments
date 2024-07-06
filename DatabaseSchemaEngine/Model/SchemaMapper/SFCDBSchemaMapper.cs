@@ -1,10 +1,9 @@
-﻿using DatabaseSchemaEngine.Helper.Cache;
-using DatabaseSchemaEngine.Model.SchemaMapper;
+﻿using DatabaseSchemaEngine.Constants;
+using DatabaseSchemaEngine.Helper.Cache;
 using DatabaseSchemaEngine.Model.SchemaMappingDetail;
 using DatabaseSchemaEngine.Repository;
-using Serilog;
 
-namespace DatabaseSchemaEngine.Model.SchemaGenerator
+namespace DatabaseSchemaEngine.Model.SchemaMapper
 {
 	/// <summary>
 	/// Handles schema mappings for SFCDB.
@@ -12,12 +11,10 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 	public class SFCDBSchemaMapper : ISchemaMapper
 	{
 		private readonly IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
-		private readonly ILogger logger;
 
-		public SFCDBSchemaMapper(IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository, ILogger logger)
+		public SFCDBSchemaMapper(IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository)
 		{
 			this.databaseSchemaGenerationRepository = databaseSchemaGenerationRepository;
-			this.logger = logger;
 		}
 
 		public ISchemaMappingDetail? GetSchemaMappings()
@@ -31,12 +28,12 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 
 				if (schemaMappingDetail == null)
 				{
-					throw new Exception($"Mapping details not found for database framework: {Enum.TargetDatabaseFrameworkValues.SFCDB}");
+					throw new Exception( $"{Common.MappingDetailsNotFound}: { Enum.TargetDatabaseFrameworkValues.SFCDB}");
 				}
 			}
-			catch (Exception ex)
+			catch
 			{
-				logger.Error(ex, "Mapping not found.");
+				throw;
 			}
 
 			return schemaMappingDetail;

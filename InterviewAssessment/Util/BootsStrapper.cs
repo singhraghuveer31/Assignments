@@ -4,7 +4,6 @@ using System.Reflection;
 using Autofac;
 using Autofac.Core;
 using Autofac.Features.ResolveAnything;
-using DatabaseSchemaEngine.Repository;
 using DatabaseSchemaEngine.Service.SchemaGeneration;
 using DomainModelEditor.Behaviour;
 using DomainModelEditor.Model;
@@ -107,18 +106,18 @@ namespace DomainModelEditor.Util
             Logger.Debug("Registering dragging behaviour.");
             builder.RegisterInstance<IDraggingBehaviour>(new DraggingBehaviour());
 
-			builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+            builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             var databaseSchemaGenerationService = new DatabaseSchemaGenerationService(Logger);
             var generateSchemaRepository = new GenerateSchemaRepository();
-			builder.RegisterInstance<IDatabaseSchemaGeneratorService>(databaseSchemaGenerationService);
-			builder.RegisterType<GenerateSchemaDialog>().
-			WithParameters(new List<Parameter>
-			{
-				new TypedParameter(typeof(IDatabaseSchemaGeneratorService), databaseSchemaGenerationService),
-                new TypedParameter(typeof(IGenerateSchemaRepository), generateSchemaRepository),
+            builder.RegisterInstance<IDatabaseSchemaGeneratorService>(databaseSchemaGenerationService);
+            builder.RegisterType<GenerateSchemaDialog>().
+            WithParameters(new List<Parameter>
+            {
+                new TypedParameter(typeof(IDatabaseSchemaGeneratorService), databaseSchemaGenerationService),
+                new TypedParameter(typeof(IGenerateSchemaRepository), generateSchemaRepository)
             });
-		}
+        }
 
         public static T Resolve<T>()
         {

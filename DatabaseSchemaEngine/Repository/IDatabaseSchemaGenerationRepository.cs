@@ -10,7 +10,7 @@ namespace DatabaseSchemaEngine.Repository
 		/// <summary>
 		/// Gets available schema mappings.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Mapping of database framework to type details.</returns>
 		Dictionary<string, SchemaMappingDetail> GetSchemaMappings();
 	}
 }

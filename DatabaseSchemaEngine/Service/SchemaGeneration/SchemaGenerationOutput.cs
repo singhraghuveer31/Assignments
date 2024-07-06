@@ -3,17 +3,13 @@
 	public class SchemaGenerationOutput : ISchemaGenerationOutput
 	{
 
-		public SchemaGenerationOutput(string domainModelMetaData, string databaseSchema, List<string> validationMessages)
+		public SchemaGenerationOutput(List<string> validationMessages, bool isSuccess)
 		{
-			DomainModelMetaData = domainModelMetaData;
-			DatabaseSchema = databaseSchema;
 			ValidationMessages = validationMessages;
+			IsSuccess = isSuccess;
 		}
 
-		public string DomainModelMetaData { get; set; }
-
-		public string DatabaseSchema { get; set; }
-
 		public List<string> ValidationMessages { get; set; }
+		public bool IsSuccess { get; set; }
 	}
 }

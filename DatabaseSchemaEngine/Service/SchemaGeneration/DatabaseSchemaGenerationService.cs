@@ -16,14 +16,14 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 		public DatabaseSchemaGenerationService(ILogger logger)
 		{
 			this.logger = logger;
-			Output = new SchemaGenerationOutput(string.Empty, string.Empty, new List<string>());
+			Output = new SchemaGenerationOutput(new List<string>(), false);
 		}
 
 		public void GenerateDatabaseSchema(ISchemaGenerationInput schemaGenerationInput)
 		{
 			try
 			{
-				var factory = FactoryProvider.GetSchemaGeneratorFactory(schemaGenerationInput.TargetFramework, logger);
+				var factory = FactoryProvider.GetSchemaGeneratorFactory(schemaGenerationInput.TargetFramework);
 
 				//Validate.
 				if (!Validate(factory, schemaGenerationInput.EntityDetails))
@@ -31,19 +31,21 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 					return;
 				}
 
+				//Store Metadata.
+				GenerateDomainModelMetaData(factory, schemaGenerationInput.EntityDetails);
+
 				//Format.
 				var formmatedData = Format(factory, schemaGenerationInput);
 
 				//Generate.
 				var generator = factory.GetDatabaseSchemaGenerator();
 				generator?.GenerateDatabaseSchema(formmatedData);
-
-				//Store Metadata.
-				GenerateDomainModelMetaData(factory, schemaGenerationInput.EntityDetails);
+				
+				Output.IsSuccess = true;
 			}
 			catch (Exception ex)
 			{
-				logger.Error(ex, "Generate database schema failed");
+				logger.Error(ex, "Generate database schema failed", nameof(GenerateDatabaseSchema));
 			}
 		}
 
@@ -51,7 +53,7 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 		{
 			try
 			{
-				if (entityDetails == null || !entityDetails.Any()) 
+				if (entityDetails == null || !entityDetails.Any())
 				{
 					throw new ArgumentNullException(nameof(entityDetails));
 				}
@@ -67,6 +69,10 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			catch (Exception ex)
 			{
 				throw new Exception("Error while validating the data.", ex);
+			}
+			finally 
+			{
+				Validator.Validator.ClearValidationRules();
 			}
 
 			return true;
@@ -84,6 +90,10 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			{
 				throw new Exception("Error while formatting the data.", ex);
 			}
+			finally 
+			{
+				Formatter.Formatter.ClearFormatRules();
+			}
 			return entities;
 		}
 
@@ -93,7 +103,6 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			{
 				var domainModelGenerator = schemaGeneratorFactory.GetDomainModelGenerator();
 				domainModelGenerator.GenerateDomainModel(entityDetails);
-				Output.DomainModelMetaData = domainModelGenerator.Output.Content;
 			}
 			catch (Exception ex) 
 			{

@@ -3,7 +3,7 @@ using DatabaseSchemaEngine.Helper.Cache;
 
 namespace DatabaseSchemaEngine.Validator.SyntaxValidationRule
 {
-	internal class UniqueNameValidationRule : IValidationRule
+	public class UniqueNameValidationRule : IValidationRule
 	{
 		private readonly TypeNameValues typeName;
 
@@ -14,14 +14,28 @@ namespace DatabaseSchemaEngine.Validator.SyntaxValidationRule
 
 		public bool IsValid(string name)
 		{
-			if (typeName == TypeNameValues.Entity && SchemaMappingCache.EntityNameValidationCache.Contains(name))
+			if (typeName == TypeNameValues.Entity)
 			{
-				return false;
+				if (SchemaMappingCache.EntityNameValidationCache.Contains(name))
+				{
+					return false;
+				}
+				else
+				{
+					SchemaMappingCache.EntityNameValidationCache.Add(name);
+				}
 			}
 
-			if (typeName == TypeNameValues.Attibute && SchemaMappingCache.AttributeNameValidationCache.Contains(name)) 
+			if (typeName == TypeNameValues.Attibute)
 			{
-				return false;
+				if (SchemaMappingCache.AttributeNameValidationCache.Contains(name))
+				{
+					return false;
+				}
+				else 
+				{
+					SchemaMappingCache.AttributeNameValidationCache.Add(name);
+				}
 			}
 
 			return true;

@@ -24,11 +24,17 @@ namespace DatabaseSchemaEngine.Formatter.SyntaxFormatRules
 			}
 			else if (namingConventionRule == NamingConventionValues.CamelCase)
 			{
-				syntax = JsonNamingPolicy.CamelCase.ConvertName(syntax);
+				var words = syntax.Split(new[] { "_", " " }, StringSplitOptions.RemoveEmptyEntries);
+				words = words
+					.Select(word => char.ToUpper(word[0]) + word.Substring(1))
+					.ToArray();
+
+				syntax = string.Join(string.Empty, words);
+				syntax = char.ToLowerInvariant(syntax[0]) + syntax.Substring(1);
 			}
 			else if (namingConventionRule == NamingConventionValues.CapitalCaseFirst)
 			{
-				syntax = char.ToUpper(syntax[0]) + syntax.Substring(1);
+				syntax = char.ToUpper(syntax[0]) + syntax.Substring(1).ToLowerInvariant();
 			}
 
 			return syntax;

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace DatabaseSchemaEngine.Validator.SyntaxValidationRule
 {
-	internal class SpecialCharacterValidationRule : IValidationRule
+	public class SpecialCharacterValidationRule : IValidationRule
 	{
 		private readonly List<char> allowedSpecialChars;
 
@@ -15,7 +15,7 @@ namespace DatabaseSchemaEngine.Validator.SyntaxValidationRule
 		public bool IsValid(string syntax)
 		{
 			var chars = string.Join("", allowedSpecialChars);
-			return new Regex($"^[a-zA-Z0-9{chars}]").IsMatch(syntax);
+			return new Regex($"^[ A-Za-z0-9{chars}]*$").IsMatch(syntax);
 		}
 	}
 }

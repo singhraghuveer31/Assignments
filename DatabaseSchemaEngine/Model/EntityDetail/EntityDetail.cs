@@ -6,23 +6,27 @@ namespace DatabaseSchemaEngine.Model.EntityDetail
 	using DatabaseSchemaEngine.Formatter;
 	public class EntityDetail : IEntityDetail
 	{
-		public EntityDetail(string enityName, List<IAttributeDetail> attributes)
+		public int Id { get; set; }
+
+		public EntityDetail(int id,string enityName, List<AttributeDetail> attributes)
 		{
-			EnityName = enityName;
+			Id = id;
+			EntityName = enityName;
 			Attributes = attributes;
 		}
 
-		public string EnityName { get; set; }
+		public string EntityName { get; set; }
 
-		public List<IAttributeDetail> Attributes { get; set; }
+		public List<AttributeDetail> Attributes { get; set; }
 
 		public bool Validate(IValidationRule rule, IValidationMessageProvider validationMessage, out string errorMessage)
 		{
 			errorMessage = string.Empty;
 			
-			if (!rule.IsValid(EnityName))
+			if (!rule.IsValid(EntityName))
 			{
-				errorMessage = validationMessage.GetValidationMessage(rule, EnityName, string.Empty);
+				errorMessage = validationMessage.GetValidationMessage(rule, EntityName, string.Empty);
+				return false;
 			}
 
 			return true;
@@ -30,7 +34,7 @@ namespace DatabaseSchemaEngine.Model.EntityDetail
 
 		public void Format(IFormatRule formatRule)
 		{
-			formatRule.Format(EnityName);
+			EntityName = formatRule.Format(EntityName);
 		}
 	}
 }
