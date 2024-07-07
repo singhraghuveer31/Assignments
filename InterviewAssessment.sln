@@ -15,6 +15,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReleaseNotes", "ReleaseNotes", "{F138E859-AD3D-4B2A-BF77-7CAACBC156AD}"
+	ProjectSection(SolutionItems) = preProject
+		UserStory1.md = UserStory1.md
+		UserStory2.md = UserStory2.md
+		UserStory3.md = UserStory3.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{534427CC-5158-417C-BF30-2CD979A795C1}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Pictures\UserStoryImages\ErrorPopup.png = ..\..\..\Pictures\UserStoryImages\ErrorPopup.png
+		..\..\..\Pictures\UserStoryImages\FrameworkSelectPopup.png = ..\..\..\Pictures\UserStoryImages\FrameworkSelectPopup.png
+		..\..\..\Pictures\UserStoryImages\FormattingOptions.PNG = ..\..\..\Pictures\UserStoryImages\FormattingOptions.PNG
+		..\..\..\Pictures\UserStoryImages\ModelGeneratorConfirm.PNG = ..\..\..\Pictures\UserStoryImages\ModelGeneratorConfirm.PNG
+		..\..\..\Pictures\UserStoryImages\SuccessPopup.png = ..\..\..\Pictures\UserStoryImages\SuccessPopup.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +51,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{534427CC-5158-417C-BF30-2CD979A795C1} = {F138E859-AD3D-4B2A-BF77-7CAACBC156AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0315241-1BE4-44B9-92AC-F03DA1779BDF}

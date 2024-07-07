@@ -1,4 +1,5 @@
 ﻿using DatabaseSchemaEngine.Constants;
+using DatabaseSchemaEngine.Helper;
 using DatabaseSchemaEngine.Helper.FileHelper;
 using DatabaseSchemaEngine.Model.EntityDetail;
 using Newtonsoft.Json;
@@ -24,7 +25,13 @@ namespace DatabaseSchemaEngine.Model.DomainModelGenerator
 		{
 			try
 			{
-				var path = Path.Combine(Common.DomainModelMetadataOutputPath, Common.DomainModelMetadataFileName);
+				var path = Configuration.DomainModelMetadataOutputPath;
+
+				if (!File.Exists(path)) 
+				{
+					throw new FileNotFoundException();
+				}
+
 				Output.OutputFilePath = path;
 				return path;
 			}
