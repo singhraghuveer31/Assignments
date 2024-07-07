@@ -1,6 +1,6 @@
-# Database Schma Engine
+# Database Schema Engine
 
-# Description
+# Overview
 
 This libarary can be used to generate database schema based on provided database framework. Currently supported database frameworks are SFCDB and SQLite.
 
