@@ -7,8 +7,7 @@ This libarary can be used to generate database schema based on provided database
 
  This service accepts Target Database Framework, Entity Details and Formatting Rules as input. The generated schema content is written to the configured file path. More configuration and input details are provided in below sections.
 
-
-![](DatabaseSchemaEngine.png)
+![](DatabaseSchemaEngine.PNG)
 
 
 # Prerequisites
@@ -16,7 +15,7 @@ To use the specific database framework version, below setup is required.
 
 ## Application Configuration Settings
 
-This library targets the  **Dot Net Version - ** .Net 6.0.
+This library targets the  **Dot Net Version - .Net 6.0**.
 
 There is a common setup required to generate the metadata, regardless the database framework version you want to use.
 
