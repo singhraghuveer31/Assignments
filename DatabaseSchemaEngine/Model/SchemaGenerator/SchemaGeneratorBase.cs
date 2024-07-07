@@ -3,8 +3,6 @@ using DatabaseSchemaEngine.Helper;
 using DatabaseSchemaEngine.Model.EntityDetail;
 using DatabaseSchemaEngine.Model.SchemaMapper;
 using DatabaseSchemaEngine.Model.SchemaMappingDetail;
-using DatabaseSchemaEngine.Repository;
-using Serilog;
 using System.Text;
 
 namespace DatabaseSchemaEngine.Model.SchemaGenerator
@@ -14,20 +12,20 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
     /// </summary>
     public abstract class SchemaGeneratorBase : IDatabaseSchemaGenerator
     {
-        protected IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
-        private readonly ISchemaMapper schemaMapper;
+		#region Fields
+		private readonly ISchemaMapper schemaMapper;
 
-        public SchemaGeneratorBase(ISchemaMapper schemaMapper)
+		#endregion
+
+		#region Constructor
+		public SchemaGeneratorBase(ISchemaMapper schemaMapper)
         {
             this.schemaMapper = schemaMapper;
-        }
+		}
+		#endregion
 
-        private ISchemaMappingDetail? GetSchemaMappings()
-        {
-            return schemaMapper.GetSchemaMappings();
-        }
-
-        protected abstract string GetPropertyNamePlaceHolder();
+		#region Protected Abstract Methods
+		protected abstract string GetPropertyNamePlaceHolder();
 
         protected abstract string GetPropertyTypePlaceHolder();
 
@@ -41,7 +39,16 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 
         protected abstract string GetMultiSchemaDefinitionSeparator();
 
-        protected virtual void MapTableConstraints(StringBuilder content, ISchemaMappingDetail schemaMappingDetail)
+		#endregion
+
+		#region Protected Virtual Methods
+
+		protected virtual string GetAttributeSeparator()
+		{
+			return Environment.NewLine;
+		}
+
+		protected virtual void MapTableConstraints(StringBuilder content, ISchemaMappingDetail schemaMappingDetail)
         {
         }
 
@@ -50,7 +57,11 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
 
         }
 
-        public void GenerateDatabaseSchema(IEnumerable<IEntityDetail> entityDetails)
+		#endregion
+
+		#region Public Methods
+
+		public void GenerateDatabaseSchema(IEnumerable<IEntityDetail> entityDetails)
         {
             try
             {
@@ -74,7 +85,10 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
             }
         }
 
-        private string GenerateSchemaFile(ISchemaMappingDetail schemaMappingDetail, List<IEntityDetail> entityDetails)
+		#endregion
+
+		#region Private Methods
+		private string GenerateSchemaFile(ISchemaMappingDetail schemaMappingDetail, List<IEntityDetail> entityDetails)
         {
             StringBuilder content = new StringBuilder();
 
@@ -110,31 +124,31 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
         }
 
         private void MapColumns(StringBuilder content, ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity)
-        {
-            var columnTemplate = GetTemplate(schemaMappingDetail.ColumnTemplateFileName);
-            if (columnTemplate == string.Empty)
-            {
-                return;
-            }
+		{
+			var columnTemplate = GetTemplate(schemaMappingDetail.ColumnTemplateFileName);
+			if (columnTemplate == string.Empty)
+			{
+				return;
+			}
 
-            var propList = new List<string>();
-            foreach (var attributeDetail in entity.Attributes)
-            {
-                StringBuilder columnContent = MapColumn(schemaMappingDetail, entity, columnTemplate, attributeDetail);
+			var propList = new List<string>();
+			foreach (var attributeDetail in entity.Attributes)
+			{
+				StringBuilder columnContent = MapColumn(schemaMappingDetail, entity, columnTemplate, attributeDetail);
 
-                MapColumnConstraints(columnContent, schemaMappingDetail);
+				MapColumnConstraints(columnContent, schemaMappingDetail);
 
-                propList.Add(columnContent.ToString());
-            }
+				propList.Add(columnContent.ToString());
+			}
 
-            var proprtyText = string.Empty;
-            if (propList.Any())
-                proprtyText = string.Join(Environment.NewLine, propList);
+			var proprtyText = string.Empty;
+			if (propList.Any())
+				proprtyText = string.Join(GetAttributeSeparator(), propList);
 
-            content.Replace(GetPropertyPlaceHolder(), proprtyText);
-        }
+			content.Replace(GetPropertyPlaceHolder(), proprtyText);
+		}
 
-        private StringBuilder MapColumn(ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity, string columnTemplate, IAttributeDetail attributeDetail)
+		private StringBuilder MapColumn(ISchemaMappingDetail schemaMappingDetail, IEntityDetail entity, string columnTemplate, IAttributeDetail attributeDetail)
         {
             StringBuilder columnContent = new StringBuilder().Append(columnTemplate);
             var propType = GetTypeMapping(schemaMappingDetail.TypeMappings, attributeDetail, entity);
@@ -174,5 +188,11 @@ namespace DatabaseSchemaEngine.Model.SchemaGenerator
         {
             content.Append(Environment.NewLine).AppendLine(GetMultiSchemaDefinitionSeparator());
         }
-    }
+
+		private ISchemaMappingDetail? GetSchemaMappings()
+		{
+			return schemaMapper.GetSchemaMappings();
+		}
+		#endregion
+	}
 }

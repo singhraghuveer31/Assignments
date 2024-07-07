@@ -9,9 +9,27 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 	/// </summary>
 	public class DatabaseSchemaGenerationService : IDatabaseSchemaGeneratorService
 	{
+		#region Fields
 		private readonly ILogger logger;
 
+		#endregion
+
+		#region Constructor
+
+		public DatabaseSchemaGenerationService(ILogger logger)
+		{
+			this.logger = logger;
+			Output = new SchemaGenerationOutput(new List<string>(), false);
+		}
+
+		#endregion
+
+		#region Properties
 		public ISchemaGenerationOutput Output { get; set; }
+
+		#endregion
+
+		#region Public Methods
 
 		public void GenerateDatabaseSchema(ISchemaGenerationInput schemaGenerationInput)
 		{
@@ -43,6 +61,9 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			}
 		}
 
+		#endregion
+
+		#region Private Methods
 		private bool Validate(ISchemaGeneratorFactory schemaGeneratorFactory, IEnumerable<IEntityDetail> entityDetails)
 		{
 			try
@@ -72,6 +93,25 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			return true;
 		}
 
+		private List<IEntityDetail> Format(ISchemaGeneratorFactory schemaGeneratorFactory, ISchemaGenerationInput schemaGenerationInput)
+		{
+			var entities = schemaGenerationInput.EntityDetails.ToList();
+			try
+			{
+				var formatterProvider = schemaGeneratorFactory.GetFormatterProvider(schemaGenerationInput.SchemaGenerationOptions);
+				formatterProvider.Format(entities);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error while formatting the data.", ex);
+			}
+			finally
+			{
+				Formatter.Formatter.ClearFormatRules();
+			}
+			return entities;
+		}
+
 		private void GenerateDomainModelMetaData(ISchemaGeneratorFactory schemaGeneratorFactory, IEnumerable<IEntityDetail> entityDetails) 
 		{
 			try 
@@ -84,5 +124,7 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 				throw new Exception("Error occurred while generating domain model.", ex);
 			}
 		}
+		
+		#endregion
 	}
 }

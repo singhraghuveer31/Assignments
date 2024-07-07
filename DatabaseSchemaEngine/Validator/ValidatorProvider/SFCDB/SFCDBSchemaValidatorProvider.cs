@@ -6,7 +6,7 @@ using DatabaseSchemaEngine.Validator.ValidationMessage;
 
 namespace DatabaseSchemaEngine.Validator.ValidatorProvider.SFCDB
 {
-	internal class SFCDBSchemaValidatorProvider : SchemaValidatorProviderBase, IValidatorProvider
+	internal class SFCDBSchemaValidatorProvider : SchemaValidatorProviderBase
 	{
 		public SFCDBSchemaValidatorProvider(IValidationMessageProvider validationMessageProvider) : base(validationMessageProvider)
 		{
