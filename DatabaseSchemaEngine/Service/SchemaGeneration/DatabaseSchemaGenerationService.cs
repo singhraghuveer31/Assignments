@@ -13,12 +13,6 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 
 		public ISchemaGenerationOutput Output { get; set; }
 
-		public DatabaseSchemaGenerationService(ILogger logger)
-		{
-			this.logger = logger;
-			Output = new SchemaGenerationOutput(new List<string>(), false);
-		}
-
 		public void GenerateDatabaseSchema(ISchemaGenerationInput schemaGenerationInput)
 		{
 			try
@@ -76,25 +70,6 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			}
 
 			return true;
-		}
-
-		private List<IEntityDetail> Format(ISchemaGeneratorFactory schemaGeneratorFactory, ISchemaGenerationInput schemaGenerationInput)
-		{
-			var entities = schemaGenerationInput.EntityDetails.ToList();
-			try
-			{
-				var formatterProvider = schemaGeneratorFactory.GetFormatterProvider(schemaGenerationInput.SchemaGenerationOptions);
-				formatterProvider.Format(entities);
-			}
-			catch (Exception ex)
-			{
-				throw new Exception("Error while formatting the data.", ex);
-			}
-			finally 
-			{
-				Formatter.Formatter.ClearFormatRules();
-			}
-			return entities;
 		}
 
 		private void GenerateDomainModelMetaData(ISchemaGeneratorFactory schemaGeneratorFactory, IEnumerable<IEntityDetail> entityDetails) 

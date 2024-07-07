@@ -1,4 +1,4 @@
-﻿namespace DatabaseSchemaEngine.UnitTest
+﻿namespace DatabaseSchemaEngine.Test
 {
     public class SchemaGenerationTestBase
     {
@@ -8,7 +8,7 @@
             System.Configuration.ConfigurationManager.AppSettings["schema:sfcdb:database-schema-template:Directory.path"] = "C:\\SchemaGenerationTemplates\\SFCDB\\";
         }
 
-        protected void CreateSFCDBOutputDirectory(string outPutDirectoryPath) 
+        protected void CreateSFCDBOutputDirectory(string outPutDirectoryPath)
         {
             Directory.CreateDirectory(outPutDirectoryPath);
         }

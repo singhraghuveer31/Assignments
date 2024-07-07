@@ -4,7 +4,7 @@ using DatabaseSchemaEngine.Validator.SyntaxValidationRule;
 using DatabaseSchemaEngine.Validator.ValidationMessage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Validator.ValidationMessage
+namespace DatabaseSchemaEngine.Test.Validator.ValidationMessage
 {
     [TestClass]
     public class SFCDBValidationMessageProviderTests
@@ -21,10 +21,10 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.ValidationMessage
             // Arrange
             var dataStoreName = "Test";
             var expectedMessage = string.Format(ValidationConstant.TableNameLengthValidation, "data store", dataStoreName, ValidationConstant.SFCDBDataStoreLength);
-            var provider = this.CreateProvider();
+            var provider = CreateProvider();
 
             // Act
-            var result = provider.GetValidationMessage(new LengthValidationRule(2, 3),dataStoreName, "");
+            var result = provider.GetValidationMessage(new LengthValidationRule(2, 3), dataStoreName, "");
 
             // Assert
             Assert.AreEqual(expectedMessage, result);
@@ -48,7 +48,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.ValidationMessage
             // Arrange
             var dataStoreName = "Test";
             var expectedMessage = string.Format(ValidationConstant.TableNameAlreadyExistsValidationMessage, "Data store", dataStoreName);
-            var provider = this.CreateProvider();
+            var provider = CreateProvider();
 
             // Act
             var result = provider.GetValidationMessage(new UniqueNameValidationRule(TypeNameValues.Entity), dataStoreName, "");
@@ -75,7 +75,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.ValidationMessage
             var dataStoreName = "Test";
             var prefixConvention = PrefixConventionValues.Letter;
             var expectedMessage = string.Format(ValidationConstant.TableNamePrefixValidationMessage, "Data store", dataStoreName, prefixConvention.ToString());
-            var provider = this.CreateProvider();
+            var provider = CreateProvider();
 
             // Act
             var result = provider.GetValidationMessage(new PrefixValidationRule(prefixConvention), dataStoreName, "");
@@ -103,7 +103,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.ValidationMessage
             var allowedSpecialChars = ValidationConstant.SFCDBAllowedSpecialChars;
             var dataStoreName = "Test";
             var expectedMessage = string.Format(ValidationConstant.TableNameSpecialCharValidationMessage, "data store", dataStoreName, string.Join(",", allowedSpecialChars));
-            var provider = this.CreateProvider();
+            var provider = CreateProvider();
 
             // Act
             var result = provider.GetValidationMessage(new SpecialCharacterValidationRule(allowedSpecialChars), dataStoreName, "");

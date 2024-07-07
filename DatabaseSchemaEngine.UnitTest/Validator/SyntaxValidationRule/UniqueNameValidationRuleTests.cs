@@ -3,14 +3,14 @@ using DatabaseSchemaEngine.Helper.Cache;
 using DatabaseSchemaEngine.Validator.SyntaxValidationRule;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
+namespace DatabaseSchemaEngine.Test.Validator.SyntaxValidationRule
 {
     [TestClass]
     public class UniqueNameValidationRuleTests
     {
         [TestInitialize]
         public void TestInitialize()
-        { 
+        {
             SchemaMappingCache.EntityNameValidationCache.Clear();
         }
 
@@ -23,7 +23,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void UniqueEntityNameSucessTest()
         {
             // Arrange
-            var uniqueNameValidationRule = this.CreateUniqueNameValidationRule(TypeNameValues.Entity);
+            var uniqueNameValidationRule = CreateUniqueNameValidationRule(TypeNameValues.Entity);
             string name = "CarTest";
 
             // Act
@@ -40,7 +40,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void UniqueEntityNameFailTest()
         {
             // Arrange
-            var uniqueNameValidationRule = this.CreateUniqueNameValidationRule(TypeNameValues.Entity);
+            var uniqueNameValidationRule = CreateUniqueNameValidationRule(TypeNameValues.Entity);
             string name = "CarTest";
 
             // Act
@@ -56,7 +56,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void UniqueAttributeNameSucessTest()
         {
             // Arrange
-            var uniqueNameValidationRule = this.CreateUniqueNameValidationRule(TypeNameValues.Attibute);
+            var uniqueNameValidationRule = CreateUniqueNameValidationRule(TypeNameValues.Attibute);
             string name = "CarTest";
 
             // Act
@@ -73,7 +73,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void UniqueAttributeNameFailTest()
         {
             // Arrange
-            var uniqueNameValidationRule = this.CreateUniqueNameValidationRule(TypeNameValues.Attibute);
+            var uniqueNameValidationRule = CreateUniqueNameValidationRule(TypeNameValues.Attibute);
             string name = "CarTest";
 
             // Act

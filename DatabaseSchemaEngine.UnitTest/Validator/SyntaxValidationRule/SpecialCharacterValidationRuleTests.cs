@@ -1,7 +1,7 @@
 ﻿using DatabaseSchemaEngine.Validator.SyntaxValidationRule;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
+namespace DatabaseSchemaEngine.Test.Validator.SyntaxValidationRule
 {
     [TestClass]
     public class SpecialCharacterValidationRuleTests
@@ -13,7 +13,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void TestInitialize()
         {
             charList = new List<char> { '_', '-' };
-            specialCharacterValidationRule = this.CreateSpecialCharacterValidationRule(charList);
+            specialCharacterValidationRule = CreateSpecialCharacterValidationRule(charList);
         }
 
         private SpecialCharacterValidationRule CreateSpecialCharacterValidationRule(List<char> chars)

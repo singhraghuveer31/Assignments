@@ -17,6 +17,8 @@ using DatabaseSchemaEngine.Helper;
 using Newtonsoft.Json;
 using DomainModelEditor.Model;
 using DomainModelEditor.Model.Entities;
+using Autofac;
+using DomainModelEditor.Util;
 
 namespace DomainModelEditor.ViewModel
 {
@@ -33,6 +35,7 @@ namespace DomainModelEditor.ViewModel
             this.generateSchemaRepository = generateSchemaRepository;
             this.mainWindowViewModel = mainWindowViewModel;
             this.CloseWindowCommand = new RelayCommand<Window>(this.CloseWindow);
+            DomainModelMetadataDbContext = BootStrapper.Resolve<IDomainModelMetadataContext>();
             Initialize();
         }
 
@@ -159,8 +162,8 @@ namespace DomainModelEditor.ViewModel
             }
             catch (Exception ex)
             {
-                ShowFailedMessageBox(string.Empty);
                 Logger.Error(ex, "Error occurred while generateing database schema.", nameof(GenerateSchema));
+                ShowFailedMessageBox(string.Empty);
             }
         }
 
@@ -203,12 +206,7 @@ namespace DomainModelEditor.ViewModel
                 schemaGenerationOptions.Add(SelectedNamingConvention);
             }
 
-            return new SchemaGenerationInput
-            {
-                TargetFramework = GetTargetFramework(),
-                EntityDetails = entityDetails,
-                SchemaGenerationOptions = schemaGenerationOptions
-            };
+            return new SchemaGenerationInput(GetTargetFramework(), entityDetails,schemaGenerationOptions);
         }
 
         private List<EntityDetail> GetEntitiesForSchemaGeneration()
@@ -297,18 +295,19 @@ namespace DomainModelEditor.ViewModel
                 {
                     foreach (var entity in parserEntities)
                     {
-                        var existingEntity = Entities.Find(x => x.Entity.Id == entity.Id);
+                        var existingEntity = Entities.Find(x => x.Entity.Id == entity.Id)?.Entity;
 
                         if (existingEntity == null)
                         {
                             var randomNrGenerator = new Random();
                             mainWindowViewModel.AddEntity(entity.EntityName, 0, 0);
-                        }
-                        else
-                        {
-                            UpdateEntity(entity, existingEntity);
+                            existingEntity = mainWindowViewModel.Entities.Find(x => x.Name == entity.EntityName)?.Entity;
                         }
 
+                        if (existingEntity == null)
+                            continue;
+
+                        UpdateEntity(entity, existingEntity);
                     }
                 }
             }
@@ -319,9 +318,14 @@ namespace DomainModelEditor.ViewModel
 
         }
 
-        private void UpdateEntity(IEntityDetail entity, IEntityViewModel existingEntity)
+        private void UpdateEntity(IEntityDetail entity, Model.Entities.Entity existingEntity)
         {
-            existingEntity.Entity.Name = entity.EntityName;
+            existingEntity.Name = entity.EntityName;
+            if (existingEntity.Attributes == null)
+            {
+                existingEntity.Attributes = new List<Model.Entities.Attribute>();
+            }
+
             foreach (var attribute in entity.Attributes)
             {
                 var existingAttribute = existingEntity.Attributes.FirstOrDefault(x => x.Id == attribute.Id);
@@ -335,14 +339,15 @@ namespace DomainModelEditor.ViewModel
 
                 AddOrUpdateAttibute(existingEntity, attribute, existingAttribute, updatedDataType);
             }
-            DomainModelMetadataDbContext.Entities.Update(existingEntity.Entity);
+            DomainModelMetadataDbContext.Entities.Update(existingEntity);
+            DomainModelMetadataDbContext.SaveChanges();
         }
 
-        private static void AddOrUpdateAttibute(IEntityViewModel existingEntity, IAttributeDetail attribute, Model.Entities.Attribute existingAttribute, DataType updatedDataType)
+        private static void AddOrUpdateAttibute(Model.Entities.Entity existingEntity, IAttributeDetail attribute, Model.Entities.Attribute existingAttribute, DataType updatedDataType)
         {
             if (existingAttribute == null)
             {
-                existingEntity.AddNewAttribute(attribute.Name, updatedDataType);
+                existingEntity.Attributes.Add( new Model.Entities.Attribute { Entity = existingEntity, Name = attribute.Name, DataType = updatedDataType });
             }
             else
             {

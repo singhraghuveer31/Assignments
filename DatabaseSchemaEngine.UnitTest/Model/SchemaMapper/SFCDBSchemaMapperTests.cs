@@ -6,7 +6,7 @@ using DatabaseSchemaEngine.Repository;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace DatabaseSchemaEngine.UnitTest.Model.SchemaMapper
+namespace DatabaseSchemaEngine.Test.Model.SchemaMapper
 {
     [TestClass]
     public class SFCDBSchemaMapperTests
@@ -18,24 +18,24 @@ namespace DatabaseSchemaEngine.UnitTest.Model.SchemaMapper
         [TestInitialize]
         public void TestInitialize()
         {
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
+            mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockDatabaseSchemaGenerationRepository = this.mockRepository.Create<IDatabaseSchemaGenerationRepository>();
-            this.mockDatabaseSchemaGenerationRepository.Setup(x => x.GetSchemaMappings()).Returns(GetSchemaMappings(Enum.TargetDatabaseFrameworkValues.SFCDB.ToString()));
+            mockDatabaseSchemaGenerationRepository = mockRepository.Create<IDatabaseSchemaGenerationRepository>();
+            mockDatabaseSchemaGenerationRepository.Setup(x => x.GetSchemaMappings()).Returns(GetSchemaMappings(Enum.TargetDatabaseFrameworkValues.SFCDB.ToString()));
         }
 
         private SFCDBSchemaMapper CreateSFCDBSchemaMapper()
         {
             return new SFCDBSchemaMapper(
-                this.mockDatabaseSchemaGenerationRepository.Object);
+                mockDatabaseSchemaGenerationRepository.Object);
         }
 
         [TestMethod]
         public void GetSchemaMappingsReturnsNullTest()
         {
             // Arrange
-            this.mockDatabaseSchemaGenerationRepository.Setup(x => x.GetSchemaMappings()).Returns((Dictionary<string, SchemaMappingDetail>)null);
-            var sFCDBSchemaMapper = this.CreateSFCDBSchemaMapper();
+            mockDatabaseSchemaGenerationRepository.Setup(x => x.GetSchemaMappings()).Returns((Dictionary<string, SchemaMappingDetail>)null);
+            var sFCDBSchemaMapper = CreateSFCDBSchemaMapper();
 
             // Act
             var exception = Assert.ThrowsException<Exception>(() => sFCDBSchemaMapper.GetSchemaMappings());
@@ -48,12 +48,12 @@ namespace DatabaseSchemaEngine.UnitTest.Model.SchemaMapper
         public void GetSchemaMappingsDoesNotReturnsForTargetFrameworkTest()
         {
             // Arrange
-            this.mockDatabaseSchemaGenerationRepository.Setup(x => x.GetSchemaMappings()).Returns(GetSchemaMappings("Test"));
+            mockDatabaseSchemaGenerationRepository.Setup(x => x.GetSchemaMappings()).Returns(GetSchemaMappings("Test"));
 
-            var sFCDBSchemaMapper = this.CreateSFCDBSchemaMapper();
+            var sFCDBSchemaMapper = CreateSFCDBSchemaMapper();
 
             // Act
-            var exception = Assert.ThrowsException<Exception>(()=> sFCDBSchemaMapper.GetSchemaMappings());
+            var exception = Assert.ThrowsException<Exception>(() => sFCDBSchemaMapper.GetSchemaMappings());
 
             // Assert
             Assert.IsTrue(exception.Message.Contains(Common.MappingDetailsNotFound));

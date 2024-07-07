@@ -4,9 +4,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Serilog;
 
-namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
+namespace DatabaseSchemaEngine.Test.Service.SchemaGeneration
 {
     using DatabaseSchemaEngine.Lookup;
+    using DatabaseSchemaEngine.Test;
     using System.Collections.Generic;
 
     [TestClass]
@@ -17,7 +18,7 @@ namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
         string outPutDirectory = "C:\\MockTest";
 
 
-        public DatabaseSchemaGenerationServiceTests() 
+        public DatabaseSchemaGenerationServiceTests()
         {
             SetupSFCDBConfig(outPutDirectory);
             CreateSFCDBOutputDirectory(outPutDirectory);
@@ -28,16 +29,16 @@ namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
         public void TestInitialize()
         {
             EmptySFCDBOutputDirectory(outPutDirectory);
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
+            mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockLogger = this.mockRepository.Create<ILogger>();
-            this.mockLogger.Setup(x => x.Error(It.IsAny<Exception>(), It.IsAny<string>(), It.IsAny<string>()));
+            mockLogger = mockRepository.Create<ILogger>();
+            mockLogger.Setup(x => x.Error(It.IsAny<Exception>(), It.IsAny<string>(), It.IsAny<string>()));
         }
 
         private DatabaseSchemaGenerationService CreateService()
         {
             return new DatabaseSchemaGenerationService(
-                this.mockLogger.Object);
+                mockLogger.Object);
         }
 
         [TestMethod]
@@ -45,7 +46,7 @@ namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
         {
             // Arrange
             var validEntityName = "TestCar1";
-            var service = this.CreateService();
+            var service = CreateService();
             ISchemaGenerationInput schemaGenerationInput = GetInput(validEntityName, "Int");
 
             // Act
@@ -60,7 +61,7 @@ namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
         {
             // Arrange
             var inValidEntityName = "TestCar1233";
-            var service = this.CreateService();
+            var service = CreateService();
             ISchemaGenerationInput schemaGenerationInput = GetInput(inValidEntityName, "Int");
 
             // Act
@@ -76,7 +77,7 @@ namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
         {
             // Arrange
             var validEntityName = "TestCar1";
-            var service = this.CreateService();
+            var service = CreateService();
             ISchemaGenerationInput schemaGenerationInput = GetInput(validEntityName, "bool");
 
             // Act
@@ -87,12 +88,12 @@ namespace DatabaseSchemaEngine.UnitTest.Service.SchemaGeneration
             Assert.IsTrue(mockLogger.Invocations.Count() == 1);
         }
 
-        private ISchemaGenerationInput GetInput(string entityName, string dataType) 
+        private ISchemaGenerationInput GetInput(string entityName, string dataType)
         {
             return new SchemaGenerationInput(Enum.TargetDatabaseFrameworkValues.SFCDB, GetEntityDetails(entityName, dataType), GetSchemaGenerationOptions());
         }
 
-        private IEnumerable<Lookup> GetSchemaGenerationOptions() 
+        private IEnumerable<Lookup> GetSchemaGenerationOptions()
         {
             var list = new List<Lookup>();
             list.Add(new Lookup { Name = "Test", Code = "Test", TypeName = "Test" });

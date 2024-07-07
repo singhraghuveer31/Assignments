@@ -1,7 +1,7 @@
 ﻿using DatabaseSchemaEngine.Validator.SyntaxValidationRule;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
+namespace DatabaseSchemaEngine.Test.Validator.SyntaxValidationRule
 {
     [TestClass]
     public class LengthValidationRuleTests
@@ -17,7 +17,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void FixLengthValiadtionSuccessTest()
         {
             // Arrange
-            var lengthValidationRule = this.CreateLengthValidationRule(8, 8);
+            var lengthValidationRule = CreateLengthValidationRule(8, 8);
             string syntax = "Carname1";
 
             // Act
@@ -32,7 +32,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void FixLengthValiadtionFailTest()
         {
             // Arrange
-            var lengthValidationRule = this.CreateLengthValidationRule(8, 8);
+            var lengthValidationRule = CreateLengthValidationRule(8, 8);
             string syntax = "Carname12";
 
             // Act
@@ -47,7 +47,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void VariableLengthValiadtionSuccessTest()
         {
             // Arrange
-            var lengthValidationRule = this.CreateLengthValidationRule(8, 10);
+            var lengthValidationRule = CreateLengthValidationRule(8, 10);
             string syntax = "Carname12";
 
             // Act
@@ -62,7 +62,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void VariableLengthValiadtionFailTest()
         {
             // Arrange
-            var lengthValidationRule = this.CreateLengthValidationRule(8, 10);
+            var lengthValidationRule = CreateLengthValidationRule(8, 10);
             string syntax = "Carname";
 
             // Act

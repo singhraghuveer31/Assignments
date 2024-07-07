@@ -2,7 +2,7 @@
 using DatabaseSchemaEngine.Formatter.SyntaxFormatRules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
+namespace DatabaseSchemaEngine.Test.Formatter.SyntaxFormatRules
 {
     [TestClass]
     public class NamingConventionRuleTests
@@ -16,7 +16,7 @@ namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
         public void CapitalCaseFirstTest()
         {
             // Arrange
-            var namingConventionRule = this.CreateNamingConventionRule(NamingConventionValues.CapitalCaseFirst);
+            var namingConventionRule = CreateNamingConventionRule(NamingConventionValues.CapitalCaseFirst);
             string syntax = "carname";
 
             // Act
@@ -30,7 +30,7 @@ namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
         public void CamelCaseTest()
         {
             // Arrange
-            var namingConventionRule = this.CreateNamingConventionRule(NamingConventionValues.CamelCase);
+            var namingConventionRule = CreateNamingConventionRule(NamingConventionValues.CamelCase);
             string syntax = "car name";
 
             // Act
@@ -44,7 +44,7 @@ namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
         public void AllLowerCaseTest()
         {
             // Arrange
-            var namingConventionRule = this.CreateNamingConventionRule(NamingConventionValues.LowerCase);
+            var namingConventionRule = CreateNamingConventionRule(NamingConventionValues.LowerCase);
             string syntax = "CarName";
 
             // Act
@@ -58,7 +58,7 @@ namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
         public void AllUperCaseTest()
         {
             // Arrange
-            var namingConventionRule = this.CreateNamingConventionRule(NamingConventionValues.UpperCase);
+            var namingConventionRule = CreateNamingConventionRule(NamingConventionValues.UpperCase);
             string syntax = "CarName";
 
             // Act

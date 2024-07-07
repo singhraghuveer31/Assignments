@@ -2,7 +2,7 @@
 using DatabaseSchemaEngine.Validator.SyntaxValidationRule;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
+namespace DatabaseSchemaEngine.Test.Validator.SyntaxValidationRule
 {
     [TestClass]
     public class PrefixValidationRuleTests
@@ -18,7 +18,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void StartsWithLetterSuccessTest()
         {
             // Arrange
-            var prefixValidationRule = this.CreatePrefixValidationRule(PrefixConventionValues.Letter);
+            var prefixValidationRule = CreatePrefixValidationRule(PrefixConventionValues.Letter);
             string syntax = "CarName";
 
             // Act
@@ -33,7 +33,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void StartsWithLetterFailTest()
         {
             // Arrange
-            var prefixValidationRule = this.CreatePrefixValidationRule(PrefixConventionValues.Letter);
+            var prefixValidationRule = CreatePrefixValidationRule(PrefixConventionValues.Letter);
             string syntax = "1CarName";
 
             // Act
@@ -48,7 +48,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void StartsWithUnderScoreSuccessTest()
         {
             // Arrange
-            var prefixValidationRule = this.CreatePrefixValidationRule(PrefixConventionValues.UnderScore);
+            var prefixValidationRule = CreatePrefixValidationRule(PrefixConventionValues.UnderScore);
             string syntax = "_CarName";
 
             // Act
@@ -63,7 +63,7 @@ namespace DatabaseSchemaEngine.UnitTest.Validator.SyntaxValidationRule
         public void StartsWithUnderScoreFailTest()
         {
             // Arrange
-            var prefixValidationRule = this.CreatePrefixValidationRule(PrefixConventionValues.UnderScore);
+            var prefixValidationRule = CreatePrefixValidationRule(PrefixConventionValues.UnderScore);
             string syntax = "CarName";
 
             // Act

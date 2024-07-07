@@ -4,10 +4,11 @@ using DatabaseSchemaEngine.Model.EntityDetail;
 using DatabaseSchemaEngine.Model.SchemaGenerator;
 using DatabaseSchemaEngine.Model.SchemaMapper;
 using DatabaseSchemaEngine.Model.SchemaMappingDetail;
+using DatabaseSchemaEngine.Test;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace DatabaseSchemaEngine.UnitTest.Model.SchemaGenerator
+namespace DatabaseSchemaEngine.Test.Model.SchemaGenerator
 {
     [TestClass]
     public class SFCDBSchemaGeneratorTests : SchemaGenerationTestBase
@@ -22,24 +23,24 @@ namespace DatabaseSchemaEngine.UnitTest.Model.SchemaGenerator
             SetupSFCDBConfig(outPutDirectory);
             CreateSFCDBOutputDirectory(outPutDirectory);
             EmptySFCDBOutputDirectory(outPutDirectory);
-            this.mockRepository = new MockRepository(MockBehavior.Strict);
+            mockRepository = new MockRepository(MockBehavior.Strict);
 
-            this.mockSchemaMapper = this.mockRepository.Create<ISchemaMapper>();
-            this.mockSchemaMapper.Setup(x => x.GetSchemaMappings()).Returns(GetMappings());
+            mockSchemaMapper = mockRepository.Create<ISchemaMapper>();
+            mockSchemaMapper.Setup(x => x.GetSchemaMappings()).Returns(GetMappings());
         }
 
         private SFCDBSchemaGenerator CreateSFCDBSchemaGenerator()
         {
             return new SFCDBSchemaGenerator(
-                this.mockSchemaMapper.Object);
+                mockSchemaMapper.Object);
         }
 
         [TestMethod]
         public void SchemaGenerationSuccessfulTest()
         {
             // Arrange
-            var sFCDBSchemaGenerator = this.CreateSFCDBSchemaGenerator();
-            var entities = GetEntityDetails("String","Attribute1","Attribute2","Test");
+            var sFCDBSchemaGenerator = CreateSFCDBSchemaGenerator();
+            var entities = GetEntityDetails("String", "Attribute1", "Attribute2", "Test");
 
             // Act
             sFCDBSchemaGenerator.GenerateDatabaseSchema(entities);
@@ -52,12 +53,12 @@ namespace DatabaseSchemaEngine.UnitTest.Model.SchemaGenerator
         public void SchemaGenerationWhenNoMappingTest()
         {
             // Arrange
-            this.mockSchemaMapper.Setup(x => x.GetSchemaMappings()).Returns((SchemaMappingDetail)null);
-            var sFCDBSchemaGenerator = this.CreateSFCDBSchemaGenerator();
+            mockSchemaMapper.Setup(x => x.GetSchemaMappings()).Returns((SchemaMappingDetail)null);
+            var sFCDBSchemaGenerator = CreateSFCDBSchemaGenerator();
             var entities = GetEntityDetails("String", "Attribute1", "Attribute2", "Test");
 
             // Act
-             sFCDBSchemaGenerator.GenerateDatabaseSchema(entities);
+            sFCDBSchemaGenerator.GenerateDatabaseSchema(entities);
 
             // Assert
             Assert.IsTrue(Directory.GetFiles(outPutDirectory).Count() == 0);
@@ -73,7 +74,7 @@ namespace DatabaseSchemaEngine.UnitTest.Model.SchemaGenerator
             var prop2 = "Attribute2";
             var entityName = "Test";
 
-            var sFCDBSchemaGenerator = this.CreateSFCDBSchemaGenerator();
+            var sFCDBSchemaGenerator = CreateSFCDBSchemaGenerator();
             var entities = GetEntityDetails(type, prop1, prop2, entityName);
 
             // Act
@@ -86,7 +87,7 @@ namespace DatabaseSchemaEngine.UnitTest.Model.SchemaGenerator
             Assert.IsTrue(Directory.GetFiles(outPutDirectory).Count() == 0);
         }
 
-        private SchemaMappingDetail GetMappings() 
+        private SchemaMappingDetail GetMappings()
         {
             var sfcdbTypeMap = new Map<string, string>();
             sfcdbTypeMap.Add("String", "unlimited_text");

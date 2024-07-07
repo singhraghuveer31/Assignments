@@ -30,7 +30,7 @@
 		static Configuration() 
 		{
 			LogPath	= System.Configuration.ConfigurationManager.AppSettings["serilog:write-to:File.path"];
-			DomainModelMetadataOutputPath = System.Configuration.ConfigurationManager.AppSettings["schema:domain-model:File.outputPath"];
+			DomainModelMetadataOutputPath = System.Configuration.ConfigurationManager.AppSettings["schema:domain-model-metadata:File.outputPath"];
 			SFCDDatabaseSchemaOuputDirectory = System.Configuration.ConfigurationManager.AppSettings["schema:sfcdb:database-schema:Directory.outputPath"];
 			SFCDDatabaseSchemaTemplateDirectory = System.Configuration.ConfigurationManager.AppSettings["schema:sfcdb:database-schema-template:Directory.path"];
 			bool.TryParse(System.Configuration.ConfigurationManager.AppSettings["schema:domain-model:allowEnityUpdateFromFile"], out bool allowEntityUpdate);

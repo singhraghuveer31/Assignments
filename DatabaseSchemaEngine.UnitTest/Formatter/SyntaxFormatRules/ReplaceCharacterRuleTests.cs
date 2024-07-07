@@ -1,7 +1,7 @@
 ﻿using DatabaseSchemaEngine.Formatter.SyntaxFormatRules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
+namespace DatabaseSchemaEngine.Test.Formatter.SyntaxFormatRules
 {
     [TestClass]
     public class ReplaceCharacterRuleTests
@@ -17,7 +17,7 @@ namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
         public void ReplaceSpaceWithUnderScoreTest()
         {
             // Arrange
-            var replaceCharacterRule = this.CreateReplaceCharacterRule(' ', '_');
+            var replaceCharacterRule = CreateReplaceCharacterRule(' ', '_');
             string syntax = "car name 1";
 
             // Act
@@ -32,7 +32,7 @@ namespace DatabaseSchemaEngine.UnitTest.Formatter.SyntaxFormatRules
         public void ReplaceCommaWithUnderScoreTest()
         {
             // Arrange
-            var replaceCharacterRule = this.CreateReplaceCharacterRule(',', '_');
+            var replaceCharacterRule = CreateReplaceCharacterRule(',', '_');
             string syntax = "car,name 1";
 
             // Act
