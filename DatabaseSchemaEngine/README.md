@@ -6,7 +6,7 @@ This libarary can be used to generate database schema based on provided database
 are SFCDB and SQLite.
 
 **Target Framework Version:**
- -.Net 6.0
+ .Net 6.0
 
 # Architecture
 ** Diagram here **
@@ -57,7 +57,15 @@ File name : SFCDBPropTemplate.df
 
 **SQLite**
 
+File Name : SQLiteTableTemplate.df
 
+    CREATE TABLE <table name>(
+    <column>
+    );
+
+File Name : SQLiteColumnTemplate.df
+
+        <column name> <type specification>
 
 
 # Using the Library
@@ -65,12 +73,14 @@ File name : SFCDBPropTemplate.df
 This library provides a service interface IDatabaseSchemaGeneratorService. To generate the database schema call the method IDatabaseSchemaGeneratorService.GenerateDatabaseSchema.
 
 Fill the input details for type of ISchemaGenerationInput.
+
 **Input**
 - TargetFramework - type of TargetDatabaseFrameworkValues :Target database framework for which schema to be generated.
 - EntityDetails - type of IEnumerable of IEntityDetail : List of entitites which will be processed.
 - FormattingRules - type of IEnumerable of ILookup : List of formatting rules applicable for schema formatting. 
 
 This service call with generate following output of type ISchemaGenerationOutput
+
 **Output**
 - ValidationMessages - type of List of string : Validation messages for the schema input.
 - IsSuccess - type of bool: Indiactes if the schema generation was successful.

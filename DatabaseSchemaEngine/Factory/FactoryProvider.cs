@@ -14,6 +14,11 @@ namespace DatabaseSchemaEngine.Factory
 				return new SFCDBSchemaGeneratorFactory();
 			}
 
+			if (targetFramework.Equals(TargetDatabaseFrameworkValues.SQLite))
+			{
+				return new SQLiteSchemaGeneratorFactory();
+			}
+
 			return null;
 		}
 	}
