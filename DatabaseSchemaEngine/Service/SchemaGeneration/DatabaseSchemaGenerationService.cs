@@ -57,6 +57,7 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 			}
 			catch (Exception ex)
 			{
+				Output.IsSuccess = false;
 				logger.Error(ex, "Generate database schema failed", nameof(GenerateDatabaseSchema));
 			}
 		}
@@ -78,6 +79,7 @@ namespace DatabaseSchemaEngine.Service.SchemaGeneration
 				if (errorMessages != null && errorMessages.Any())
 				{
 					Output.ValidationMessages = errorMessages;
+					Output.IsSuccess = false;
 					return false;
 				}
 			}

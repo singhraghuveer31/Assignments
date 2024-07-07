@@ -6,7 +6,7 @@ using DatabaseSchemaEngine.Repository;
 
 namespace DatabaseSchemaEngine.Model.SchemaMapper
 {
-	public abstract class SchemaMapperBase
+	public abstract class SchemaMapperBase : ISchemaMapper
 	{
 		private readonly IDatabaseSchemaGenerationRepository databaseSchemaGenerationRepository;
 		private readonly TargetDatabaseFrameworkValues targetDatabaseFramework;
