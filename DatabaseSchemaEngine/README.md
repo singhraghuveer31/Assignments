@@ -2,13 +2,12 @@
 
 # Overview
 
-This libarary can be used to generate database schema based on provided database framework. Currently supported database frameworks are SFCDB and SQLite.
+This library provides methods to generate database schema based on the target database framework. Currently supported database frameworks are SFCDB and SQLite.
 
-
- This service accepts Target Database Framework, Entity Details and Formatting Rules as input. The generated schema content is written to the configured file path. More configuration and input details are provided in below sections.
+**IDatabaseSchemaGeneratorService** service interface provides the method **GenerateDatabaseSchema**, which accepts Target Database Framework, Entity Details and Formatting Rules as input. The generated schema content is written to the configured file path. More configuration and input details are provided in below sections.
 
 ![](DatabaseSchemaEngine.PNG)
-
+*<p align="center">Flow Diagram</p>*
 
 # Prerequisites
 To use the specific database framework version, below setup is required.
@@ -20,7 +19,7 @@ This library targets the  **Dot Net Version - .Net 6.0**.
 There is a common setup required to generate the metadata, regardless the database framework version you want to use.
 
 **Common Setup**
-- Domain Model Metadata Output File Path - This is a file path for metadata, which will be generated for the entities. This file can be edited and used for regeneration of database schema.
+- Domain Model Metadata Output File Path - This is a file path for domain model metadata, which will be generated for the entities. Once generated, this file can be edited and used for regeneration of database schema.
         
         <add key="schema:domain-model-metadata:File.outputPath" value="DomainModelMetadata.metadata" />
 
@@ -28,6 +27,8 @@ There is a common setup required to generate the metadata, regardless the databa
 
         <add key="schema:domain-model:allowEnityUpdateFromFile" value="true" />
 
+
+The below setups are specific to target database framework.
 
 **SCFDB**
 - Template Directory Path - This path will contain the template files required for SFCDB schema generation. Replace the TEMPLATE_PATH with the actual path on your machine.
@@ -46,7 +47,7 @@ There is a common setup required to generate the metadata, regardless the databa
         <add key="schema:sqlite:database-schema:Directory.outputPath" value="OUTPUT_PATH" />
 
 # Template Files
-Template files will be placed in the directory as confidured in last step for individual target framework. Below are the template files formats for respective target database framework.
+Template files will be placed in the directory as configured in last step for individual target framework. Below are the template files **names** and **formats** for respective target database framework.
 
 **SFCDB**
 
