@@ -9,21 +9,26 @@ https://github.com/singhraghuveer31/Assignments/blob/master/DatabaseSchemaEngine
 ## Implementation Details
 When user opens Generate Schema pop, below behavior is expected on the screen.
 - User will be able to see a new drop down with name Database Framework.
+  
+![](Images/DatabaseFramework.png)
 
-![](Images\DatabaseFramework.PNG)
 
 - When user click on the **Generate** button,
 
 	- if no Database Framework version selected, error message will pop up to select a value.
 	
-	![](FrameworkSelectPopup.png)
+	![](Images/FrameworkSelectPopup.png)
 
 	- if there are validation errors then a pop up with error messages will be diplayed.
 
-	![](Images\ErrorPopup.png)
-    
+
+	![](Images/ErrorPopup.png)
+
+
     otherwise pop up with sucess message will diplay.
-	
-	![](Images\SuccessPopup.PNG)
-  
-    and file should be generated in the configured path.
+
+
+	![](Images/SuccessPopup.png)
+
+
+    and file will be generated in the configured path.
