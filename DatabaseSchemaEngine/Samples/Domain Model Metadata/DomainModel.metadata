@@ -1,0 +1,50 @@
+[
+    {
+        "Id": 1,
+        "EntityName": "Entity 1",
+        "Attributes": [
+            {
+                "Id": 1,
+                "Type": "String",
+                "Name": "prop1Name"
+            },
+            {
+                "Id": 2,
+                "Type": "Int",
+                "Name": "prop2Name"
+            }
+        ]
+    },
+    {
+        "Id": 2,
+        "EntityName": "Entity 2",
+        "Attributes": [
+            {
+                "Id": 1,
+                "Type": "String",
+                "Name": "prop1Name"
+            },
+            {
+                "Id": 2,
+                "Type": "Int",
+                "Name": "prop2Name"
+            }
+        ]
+    },
+    {
+        "Id": 3,
+        "EntityName": "Entity 3",
+        "Attributes": [
+            {
+                "Id": 1,
+                "Type": "String",
+                "Name": "prop1Name"
+            },
+            {
+                "Id": 2,
+                "Type": "Int",
+                "Name": "prop2Name"
+            }
+        ]
+    }
+]

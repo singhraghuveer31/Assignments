@@ -20,13 +20,15 @@ This library targets the  **Dot Net Version - .Net 6.0**.
 There is a common setup required to generate the metadata, regardless the database framework version you want to use.
 
 **Common Setup**
-- Domain Model Metadata Output File Path - This is a file path for metadata, which will be generated for the entities. This file can be edited and used for regeneration of database schema.
-        
-        <add key="schema:domain-model-metadata:File.outputPath" value="DomainModelMetadata.metadata" />
+- Domain Model Metadata Output File Path - This is a file path for metadata, which will be generated for the entities. This file can be edited and used for regeneration of database schema. Replace the DOMAINMODEL_METADATA_OUTPUT_PATH with actual path in your machine.
 
-- Allow Entity Update - If user wants to update the entities from the metadata file, the value for below setting can be set as true.
+        <add key="schema:domain-model-metadata:File.outputPath" value="DOMAINMODEL_METADATA_OUTPUT_PATH" />
 
-        <add key="schema:domain-model:allowEnityUpdateFromFile" value="true" />
+*Sample file for the DomainModelMetadata prvided in the path* [Domain Model Metadata Sample](/DatabaseSchemaEngine/Samples/Domain Model Metadata). System will generate this file, still user can place the file from Sample folder and modify as per requirement. System will detect this file and will ask user's confirmation if this file should be used for schema generation.
+
+- Allow Entity Update - If user wants to update the entities from the metadata file, the value for below setting can be set as true. This setting expects a boolean value *true* or *false*
+
+        <add key="schema:domain-model:allowEnityUpdateFromFile" value="false" />
 
 
 **SCFDB**
@@ -47,6 +49,8 @@ There is a common setup required to generate the metadata, regardless the databa
 
 # Template Files
 Template files will be placed in the directory as confidured in last step for individual target framework. Below are the template files formats for respective target database framework.
+
+For referece, please see the files in the path [Schema Templates](/DatabaseSchemaEngine/Samples/Schema Templates). And place these files in the configured directories.
 
 **SFCDB**
 
