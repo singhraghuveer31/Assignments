@@ -23,7 +23,10 @@ There is a common setup required to generate the metadata, regardless the databa
 
         <add key="schema:domain-model-metadata:File.outputPath" value="DOMAINMODEL_METADATA_OUTPUT_PATH" />
 
-*Sample file for the DomainModelMetadata prvided in the path* [Domain Model Metadata Sample](/DatabaseSchemaEngine/Samples/Domain Model Metadata). System will generate this file, still user can place the file from Sample folder and modify as per requirement. System will detect this file and will ask user's confirmation if this file should be used for schema generation.
+   *Sample file for the DomainModelMetadata prvided in the path* [Domain Model Metadata Sample](Samples/Domain%20Model%20Metadata). *System will generate this file, still user can place the file 
+   from Sample folder and modify as per requirement. System will detect this file and will ask user's confirmation if this 
+   file should be used for schema generation.*
+
 
 - Allow Entity Update - If user wants to update the entities from the metadata file, the value for below setting can be set as true. This setting expects a boolean value *true* or *false*
 
@@ -51,7 +54,8 @@ The below setups are specific to target database framework.
 # Template Files
 Template files will be placed in the directory as configured in last step for individual target framework. Below are the template files **names** and **formats** for respective target database framework.
 
-For referece, please see the files in the path [Schema Templates](/DatabaseSchemaEngine/Samples/Schema Templates). And place these files in the configured directories.
+  *For referece, please see the files in the path [Schema Templates](Samples/Schema%20Templates). And 
+   place these files in the configured directories*
 
 **SFCDB**
 
