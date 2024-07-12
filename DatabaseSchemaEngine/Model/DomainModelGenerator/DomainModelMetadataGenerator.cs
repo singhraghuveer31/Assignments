@@ -27,7 +27,9 @@ namespace DatabaseSchemaEngine.Model.DomainModelGenerator
 			{
 				var path = Configuration.DomainModelMetadataOutputPath;
 
-				if (!File.Exists(path)) 
+				var directoryPath = Path.GetDirectoryName(path);
+
+				if (!Directory.Exists(directoryPath) || path == null) 
 				{
 					throw new FileNotFoundException();
 				}
